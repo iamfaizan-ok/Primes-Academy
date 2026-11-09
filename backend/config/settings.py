@@ -8,7 +8,7 @@ load_dotenv(BASE_DIR / '.env')
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'primes-academy-super-secure-key-2026')
 
-DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1')
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1')
 
 ALLOWED_HOSTS = ['*']
 
@@ -118,4 +118,5 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
