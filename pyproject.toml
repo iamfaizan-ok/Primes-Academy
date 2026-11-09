@@ -1,0 +1,7 @@
+[tool.pyrefly]
+search-path = [
+    "backend",
+    "backend/apps",
+    "."
+]
+

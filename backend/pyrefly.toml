@@ -1,0 +1,15 @@
+project-includes = [
+    "."
+]
+project-excludes = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.venv/**/*"
+]
+search-path = [
+    ".",
+    "apps"
+]
+
+[errors]
+missing-import = "ignore"
