@@ -1,34 +1,44 @@
-[app]
-# Replace with your existing Fly app name
-name = "primes-academy"
+# fly.toml app configuration file generated for primes-academy-l-zqca
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "primes-academy-l-zqca"
 primary_region = "ams"
 
 [build]
   dockerfile = "Dockerfile"
 
 [env]
-# Fly provides DATABASE_URL automatically; ensure Django reads it
-DJANGO_SETTINGS_MODULE = "config.settings"
-PYTHONUNBUFFERED = "1"
+  DJANGO_SETTINGS_MODULE = "config.settings"
+  PYTHONUNBUFFERED = "1"
+  PORT = "8080"
 
 [processes]
-  app = "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
+  app = "gunicorn config.wsgi:application --bind 0.0.0.0:8080"
 
-[services]
-  [[services.ports]]
-    internal_port = 8080
-    protocol = "tcp"
-    handlers = ["http"]
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
 
-  [[services.http_checks]]
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+
+  [[http_service.checks]]
     interval = "30s"
-    grace_period = "5s"
     timeout = "5s"
+    grace_period = "10s"
     method = "GET"
-    path = "/"
+    path = "/health/"
 
-  [[services.tcp_checks]]
-    interval = "30s"
-    timeout = "5s"
-    grace_period = "5s"
-
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
