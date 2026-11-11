@@ -45,6 +45,7 @@ export default function StudentList() {
   const handleSearchChange = (e) => {
     const val = e.target.value;
     setSearch(val);
+    setCurrentPage(1);
     fetchStudents(val);
   };
 

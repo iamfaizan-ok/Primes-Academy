@@ -1,0 +1,8 @@
+# Snyk policy file
+version: v1.22.1
+ignore:
+  SNYK-JS-BRACES-19963945:
+    - '*':
+        reason: 'Build-time only dependency in Tailwind CSS file scanning; no external user input exposed'
+        expires: 2028-01-01T00:00:00.000Z
+patch: {}

@@ -3,8 +3,8 @@ from .views import FinanceOverviewListView, StudentFinanceView, PaymentDetailVie
 
 urlpatterns = [
     path('finance/', FinanceOverviewListView.as_view(), name='finance-overview'),
-    path('finance/<str:studentId>/', StudentFinanceView.as_view(), name='student-finance'),
-    path('finance/<str:studentId>/payments/', StudentFinanceView.as_view(), name='student-payment-create'),
-    path('finance/<str:studentId>/payments/<int:paymentId>/', PaymentDetailView.as_view(), name='student-payment-detail'),
+    path('finance/<str:student_id>/', StudentFinanceView.as_view(), name='student-finance'),
+    path('finance/<str:student_id>/payments/', StudentFinanceView.as_view(), name='student-payment-create'),
+    path('finance/<str:student_id>/payments/<int:payment_id>/', PaymentDetailView.as_view(), name='student-payment-detail'),
 ]
 

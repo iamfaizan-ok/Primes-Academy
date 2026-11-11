@@ -8,13 +8,30 @@ from .serializers import PaymentSerializer
 try:
     from apps.students.models import Student
     from apps.students.serializers import StudentSerializer
-    from apps.accounts.permissions import student_has_access
+    from apps.accounts.permissions import student_has_access, is_admin_user
 except ImportError:
     from backend.apps.students.models import Student
     from backend.apps.students.serializers import StudentSerializer
-    from backend.apps.accounts.permissions import student_has_access
+    from backend.apps.accounts.permissions import student_has_access, is_admin_user
 
 STANDARD_ACADEMY_FEE = Decimal('60000.00')
+ERROR_STUDENT_NOT_FOUND = 'Student not found'
+ERROR_PAYMENT_NOT_FOUND = 'Payment record not found'
+
+def resolve_student(student_id):
+    try:
+        val = str(student_id).strip()
+        if len(val) == 4 and val.isdigit():
+            student = Student.objects.filter(student_id=val).first()
+            if student:
+                return student
+        if val.isdigit():
+            student = Student.objects.filter(id=int(val)).first()
+            if student:
+                return student
+        return Student.objects.filter(student_id=val).first()
+    except Exception:
+        return None
 
 class FinanceOverviewListView(APIView):
     """
@@ -22,8 +39,11 @@ class FinanceOverviewListView(APIView):
     Accessible to Administrators.
     """
     def get(self, request):
-        if request.user.is_authenticated and request.user.role == 'student':
-            return Response({'error': 'Students cannot view master finance overview.'}, status=status.HTTP_403_FORBIDDEN)
+        if not is_admin_user(request.user):
+            return Response(
+                {'error': 'Administrator authentication required to view finance overview.'}, 
+                status=status.HTTP_401_UNAUTHORIZED if not request.user.is_authenticated else status.HTTP_403_FORBIDDEN
+            )
 
         search = request.query_params.get('search', '').strip()
         students_qs = Student.objects.all().order_by('name')
@@ -76,17 +96,15 @@ class FinanceOverviewListView(APIView):
 
 class StudentFinanceView(APIView):
     def get_student(self, student_id):
-        try:
-            if str(student_id).isdigit():
-                return Student.objects.filter(Q(id=int(student_id)) | Q(student_id=str(student_id))).first()
-            return Student.objects.filter(student_id=str(student_id)).first()
-        except Exception:
-            return None
+        return resolve_student(student_id)
 
-    def get(self, request, studentId):
-        student = self.get_student(studentId)
+    def get(self, request, student_id):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        student = self.get_student(student_id)
         if not student:
-            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': ERROR_STUDENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
 
         if not student_has_access(request.user, student):
             return Response({'error': 'Access denied: You can only view your own finance records.'}, status=status.HTTP_403_FORBIDDEN)
@@ -102,56 +120,80 @@ class StudentFinanceView(APIView):
             'remaining': float(remaining)
         })
 
-    def post(self, request, studentId):
-        if request.user.is_authenticated and request.user.role == 'student':
-            return Response({'error': 'Students cannot record tuition payments.'}, status=status.HTTP_403_FORBIDDEN)
+    def post(self, request, student_id):
+        if not is_admin_user(request.user):
+            return Response(
+                {'error': 'Administrator authentication required to record payments.'}, 
+                status=status.HTTP_401_UNAUTHORIZED if not request.user.is_authenticated else status.HTTP_403_FORBIDDEN
+            )
 
-        student = self.get_student(studentId)
+        student = self.get_student(student_id)
         if not student:
-            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': ERROR_STUDENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
 
         amount = request.data.get('amount')
         try:
             amount_dec = Decimal(str(amount))
             if amount_dec <= 0:
                 raise ValueError()
-        except:
+        except (ValueError, TypeError, ArithmeticError):
             return Response({'error': 'A valid positive payment amount is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        payment = Payment.objects.create(
-            student=student,
-            amount=amount_dec
-        )
+        create_kwargs = {'student': student, 'amount': amount_dec}
+        date_val = request.data.get('payment_date')
+        if date_val:
+            create_kwargs['payment_date'] = date_val
+
+        payment = Payment.objects.create(**create_kwargs)
         return Response(PaymentSerializer(payment).data, status=status.HTTP_201_CREATED)
 
 class PaymentDetailView(APIView):
-    def patch(self, request, studentId, paymentId):
-        if request.user.is_authenticated and request.user.role == 'student':
-            return Response({'error': 'Students cannot modify payments.'}, status=status.HTTP_403_FORBIDDEN)
+    def patch(self, request, student_id, payment_id):
+        if not is_admin_user(request.user):
+            return Response(
+                {'error': 'Administrator authentication required to modify payments.'}, 
+                status=status.HTTP_401_UNAUTHORIZED if not request.user.is_authenticated else status.HTTP_403_FORBIDDEN
+            )
 
-        try:
-            if str(studentId).isdigit():
-                student = Student.objects.filter(Q(id=int(studentId)) | Q(student_id=str(studentId))).first()
-            else:
-                student = Student.objects.filter(student_id=str(studentId)).first()
+        student = resolve_student(student_id)
+        if not student:
+            return Response({'error': ERROR_STUDENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
 
-            if not student:
-                return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
-
-            payment = Payment.objects.filter(student=student, id=paymentId).first()
-            if not payment:
-                return Response({'error': 'Payment record not found'}, status=status.HTTP_404_NOT_FOUND)
-        except Exception:
-            return Response({'error': 'Payment record not found'}, status=status.HTTP_404_NOT_FOUND)
+        payment = Payment.objects.filter(student=student, id=payment_id).first()
+        if not payment:
+            return Response({'error': ERROR_PAYMENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
 
         amount = request.data.get('amount')
-        try:
-            amount_dec = Decimal(str(amount))
-            if amount_dec <= 0:
-                raise ValueError()
-        except:
-            return Response({'error': 'A valid positive amount is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        if amount is not None:
+            try:
+                amount_dec = Decimal(str(amount))
+                if amount_dec <= 0:
+                    raise ValueError()
+                payment.amount = amount_dec
+            except (ValueError, TypeError, ArithmeticError):
+                return Response({'error': 'A valid positive amount is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        payment.amount = amount_dec
+        payment_date = request.data.get('payment_date')
+        if payment_date:
+            payment.payment_date = payment_date
+
         payment.save()
         return Response(PaymentSerializer(payment).data)
+
+    def delete(self, request, student_id, payment_id):
+        if not is_admin_user(request.user):
+            return Response(
+                {'error': 'Administrator authentication required to delete payments.'}, 
+                status=status.HTTP_401_UNAUTHORIZED if not request.user.is_authenticated else status.HTTP_403_FORBIDDEN
+            )
+
+        student = resolve_student(student_id)
+        if not student:
+            return Response({'error': ERROR_STUDENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
+
+        payment = Payment.objects.filter(student=student, id=payment_id).first()
+        if not payment:
+            return Response({'error': ERROR_PAYMENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
+
+        payment.delete()
+        return Response({'success': True, 'message': 'Payment record deleted successfully'})

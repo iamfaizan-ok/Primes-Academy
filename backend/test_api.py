@@ -47,6 +47,14 @@ def test_all():
     print("[PASS] Student authentication verified with Name + 4-digit ID")
 
     print("\n--- 4. Testing Security: Student Data Isolation & Forbidden Actions ---")
+    # Anonymous unauthenticated client cannot access students, performance, or finance
+    anon_client = Client()
+    anon_res = anon_client.get('/api/students/')
+    assert anon_res.status_code == 401, f"Anonymous access must be rejected (401), got {anon_res.status_code}"
+    anon_res = anon_client.get(f"/api/performance/{ali_student_id}/")
+    assert anon_res.status_code == 401, f"Anonymous access must be rejected (401), got {anon_res.status_code}"
+    print("[PASS] Anonymous requests properly rejected with 401 Unauthorized")
+
     # Student cannot create students
     res = client.post('/api/students/', {'name': 'Unauthorized Student'}, content_type='application/json')
     assert res.status_code == 403, f"Expected 403, got {res.status_code}"
@@ -142,6 +150,16 @@ def test_all():
     assert student_entry2['remaining'] == 35000.0
     assert student_entry2['status'] == 'Partial'
     print("[PASS] Master Finance Overview instantly reflects new students & payments")
+
+    # Test deleting a payment
+    del_pay_res = client.delete(f"/api/finance/{new_student['id']}/payments/{res.json()['id']}/")
+    assert del_pay_res.status_code == 200, f"Expected 200, got {del_pay_res.status_code}"
+    print("[PASS] Payment deletion endpoint verified")
+
+    # Test deleting a test
+    del_test_res = client.delete(f"/api/performance/{new_student['id']}/tests/{test_obj['id']}/")
+    assert del_test_res.status_code == 200, f"Expected 200, got {del_test_res.status_code}"
+    print("[PASS] IELTS test deletion endpoint verified")
 
     # Cleanup test student
     del_res = client.delete(f"/api/students/{new_student['id']}/")

@@ -42,12 +42,17 @@ export default function StudentHome() {
 
         {/* Visual Badge - Balanced & Sleek */}
         <div className="relative z-10 w-full md:w-auto flex-shrink-0 flex items-center justify-center">
-          <div className="w-36 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 p-3.5 flex flex-col items-center justify-center text-center shadow-lg">
+          <div 
+            onClick={() => navigate('/student/modules')}
+            className="w-36 rounded-xl bg-white/10 hover:bg-white/15 cursor-pointer backdrop-blur-md border border-white/15 p-3.5 flex flex-col items-center justify-center text-center shadow-lg transition-all"
+            title="Click to view IELTS Modules Breakdown"
+          >
             <div className="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center mb-2">
               <LucideBookOpen className="w-5 h-5" />
             </div>
             <span className="text-[10px] uppercase tracking-wider text-blue-200 font-semibold">Your IELTS</span>
             <span className="text-sm font-bold text-white">Journey</span>
+            <span className="text-[10px] text-blue-300 mt-1 underline">Modules &rarr;</span>
           </div>
         </div>
       </div>

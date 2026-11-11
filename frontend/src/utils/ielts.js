@@ -13,7 +13,7 @@ export function calculateOverallBand(listening, reading, writing, speaking) {
 
   const avg = (l + r + w + s) / 4;
   const intPart = Math.floor(avg);
-  const frac = avg - intPart;
+  const frac = Number((avg - intPart).toFixed(4));
 
   let rounded;
   if (frac < 0.25) {

@@ -4,12 +4,12 @@ from django.db import models
 from django.utils import timezone
 
 def calculate_ielts_overall(l, r, w, s):
-    avg = float(l + r + w + s) / 4.0
+    avg = (Decimal(str(l)) + Decimal(str(r)) + Decimal(str(w)) + Decimal(str(s))) / Decimal('4')
     floor_val = math.floor(avg)
-    frac = avg - floor_val
-    if frac < 0.25:
+    frac = avg - Decimal(floor_val)
+    if frac < Decimal('0.25'):
         return Decimal(f"{floor_val:.1f}")
-    elif frac < 0.75:
+    elif frac < Decimal('0.75'):
         return Decimal(f"{floor_val + 0.5:.1f}")
     else:
         return Decimal(f"{floor_val + 1:.1f}")

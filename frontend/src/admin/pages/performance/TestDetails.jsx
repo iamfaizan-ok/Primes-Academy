@@ -8,11 +8,13 @@ import {
   LucideChevronRight, 
   LucideArrowLeft, 
   LucideEdit,
+  LucideTrash2,
   LucideCalendar,
   LucideAward
 } from 'lucide-react';
 import { performanceApi } from '../../../services/api/performanceApi';
 import Alert from '../../../components/common/Alert';
+import ConfirmModal from '../../../components/common/ConfirmModal';
 
 export default function TestDetails() {
   const { studentId, testId } = useParams();
@@ -20,6 +22,8 @@ export default function TestDetails() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -35,6 +39,19 @@ export default function TestDetails() {
     }
     load();
   }, [studentId, testId]);
+
+  const handleDeleteTest = async () => {
+    try {
+      setIsDeleting(true);
+      await performanceApi.deleteTest(studentId, testId);
+      navigate(`/admin/performance/${studentId}`);
+    } catch (err) {
+      setError(err.message || 'Failed to delete test record.');
+      setIsDeleteModalOpen(false);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -94,13 +111,23 @@ export default function TestDetails() {
           </p>
         </div>
 
-        <button
-          onClick={() => navigate(`/admin/performance/${student.id}/test/${test.id}/edit`)}
-          className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] text-white text-xs font-semibold shadow-2xs transition-all cursor-pointer"
-        >
-          <LucideEdit className="w-3.5 h-3.5" />
-          <span>Edit Test</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsDeleteModalOpen(true)}
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer"
+            title="Delete this test assessment"
+          >
+            <LucideTrash2 className="w-3.5 h-3.5" />
+            <span>Delete Test</span>
+          </button>
+          <button
+            onClick={() => navigate(`/admin/performance/${student.id}/test/${test.id}/edit`)}
+            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] text-white text-xs font-semibold shadow-2xs transition-all cursor-pointer"
+          >
+            <LucideEdit className="w-3.5 h-3.5" />
+            <span>Edit Test</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Details Grid */}
@@ -117,7 +144,7 @@ export default function TestDetails() {
                   <Icon className="w-5 h-5" />
                 </div>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">{m.title}</span>
-                <span className="text-xl font-bold text-slate-900 mt-1">{m.score.toFixed(1)}</span>
+                <span className="text-xl font-bold text-slate-900 mt-1">{Number(m.score).toFixed(1)}</span>
               </div>
             );
           })}
@@ -128,7 +155,7 @@ export default function TestDetails() {
             <div className="text-center">
               <span className="text-[10px] uppercase tracking-widest text-blue-300 font-bold block">Overall</span>
               <span className="text-2xl font-black text-white tracking-tight mt-0.5 block">
-                {test.overall_band.toFixed(1)}
+                {Number(test.overall_band).toFixed(1)}
               </span>
             </div>
           </div>
@@ -149,6 +176,19 @@ export default function TestDetails() {
           <span>Back to Performance</span>
         </button>
       </div>
+
+      {/* Confirm Delete Modal */}
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        title={`Delete Test ${test.test_number}`}
+        message={`Are you sure you want to permanently delete Test ${test.test_number} for "${student.name}"? This action cannot be undone.`}
+        confirmText="Confirm Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+        isLoading={isDeleting}
+        onConfirm={handleDeleteTest}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 }

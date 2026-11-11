@@ -48,7 +48,7 @@ export default function PerformanceOverview() {
           setSelectedStudentId(students[0].id);
         }
       } catch (err) {
-        console.error(err);
+        setAlert({ type: 'error', message: err.message || 'Failed to load students' });
       }
     }
     init();

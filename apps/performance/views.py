@@ -7,25 +7,41 @@ from .serializers import IELTSTestSerializer
 try:
     from apps.students.models import Student
     from apps.students.serializers import StudentSerializer
-    from apps.accounts.permissions import student_has_access
+    from apps.accounts.permissions import student_has_access, is_admin_user
 except ImportError:
     from backend.apps.students.models import Student
     from backend.apps.students.serializers import StudentSerializer
-    from backend.apps.accounts.permissions import student_has_access
+    from backend.apps.accounts.permissions import student_has_access, is_admin_user
+
+ERROR_STUDENT_NOT_FOUND = 'Student not found'
+ERROR_TEST_NOT_FOUND = 'Test not found'
+
+def resolve_student(student_id):
+    try:
+        val = str(student_id).strip()
+        if len(val) == 4 and val.isdigit():
+            student = Student.objects.filter(student_id=val).first()
+            if student:
+                return student
+        if val.isdigit():
+            student = Student.objects.filter(id=int(val)).first()
+            if student:
+                return student
+        return Student.objects.filter(student_id=val).first()
+    except Exception:
+        return None
 
 class StudentPerformanceView(APIView):
     def get_student(self, student_id):
-        try:
-            if str(student_id).isdigit():
-                return Student.objects.filter(Q(id=int(student_id)) | Q(student_id=str(student_id))).first()
-            return Student.objects.filter(student_id=str(student_id)).first()
-        except Exception:
-            return None
+        return resolve_student(student_id)
 
-    def get(self, request, studentId):
-        student = self.get_student(studentId)
+    def get(self, request, student_id):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        student = self.get_student(student_id)
         if not student:
-            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': ERROR_STUDENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
 
         if not student_has_access(request.user, student):
             return Response({'error': 'Access denied: You can only view your own performance records.'}, status=status.HTTP_403_FORBIDDEN)
@@ -45,13 +61,16 @@ class StudentPerformanceView(APIView):
             'overall_score': overall_score
         })
 
-    def post(self, request, studentId):
-        if request.user.is_authenticated and request.user.role == 'student':
-            return Response({'error': 'Students cannot record or modify test scores.'}, status=status.HTTP_403_FORBIDDEN)
+    def post(self, request, student_id):
+        if not is_admin_user(request.user):
+            return Response(
+                {'error': 'Administrator authentication required to record test scores.'}, 
+                status=status.HTTP_401_UNAUTHORIZED if not request.user.is_authenticated else status.HTTP_403_FORBIDDEN
+            )
 
-        student = self.get_student(studentId)
+        student = self.get_student(student_id)
         if not student:
-            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': ERROR_STUDENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = IELTSTestSerializer(data=request.data)
         if serializer.is_valid():
@@ -61,12 +80,7 @@ class StudentPerformanceView(APIView):
 
 class StudentTestDetailView(APIView):
     def get_student(self, student_id):
-        try:
-            if str(student_id).isdigit():
-                return Student.objects.filter(Q(id=int(student_id)) | Q(student_id=str(student_id))).first()
-            return Student.objects.filter(student_id=str(student_id)).first()
-        except Exception:
-            return None
+        return resolve_student(student_id)
 
     def get_test(self, student, test_id):
         try:
@@ -74,36 +88,59 @@ class StudentTestDetailView(APIView):
         except Exception:
             return None
 
-    def get(self, request, studentId, testId):
-        student = self.get_student(studentId)
+    def get(self, request, student_id, test_id):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        student = self.get_student(student_id)
         if not student:
-            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': ERROR_STUDENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
 
         if not student_has_access(request.user, student):
             return Response({'error': 'Access denied: You can only view your own test details.'}, status=status.HTTP_403_FORBIDDEN)
 
-        test = self.get_test(student, testId)
+        test = self.get_test(student, test_id)
         if not test:
-            return Response({'error': 'Test not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': ERROR_TEST_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({
             'student': StudentSerializer(student).data,
             'test': IELTSTestSerializer(test).data
         })
 
-    def patch(self, request, studentId, testId):
-        if request.user.is_authenticated and request.user.role == 'student':
-            return Response({'error': 'Students cannot modify test records.'}, status=status.HTTP_403_FORBIDDEN)
+    def patch(self, request, student_id, test_id):
+        if not is_admin_user(request.user):
+            return Response(
+                {'error': 'Administrator authentication required to modify test records.'}, 
+                status=status.HTTP_401_UNAUTHORIZED if not request.user.is_authenticated else status.HTTP_403_FORBIDDEN
+            )
 
-        student = self.get_student(studentId)
+        student = self.get_student(student_id)
         if not student:
-            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
-        test = self.get_test(student, testId)
+            return Response({'error': ERROR_STUDENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
+        test = self.get_test(student, test_id)
         if not test:
-            return Response({'error': 'Test not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': ERROR_TEST_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = IELTSTestSerializer(test, data=request.data, partial=True)
         if serializer.is_valid():
             updated = serializer.save()
             return Response(IELTSTestSerializer(updated).data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, student_id, test_id):
+        if not is_admin_user(request.user):
+            return Response(
+                {'error': 'Administrator authentication required to delete test records.'}, 
+                status=status.HTTP_401_UNAUTHORIZED if not request.user.is_authenticated else status.HTTP_403_FORBIDDEN
+            )
+
+        student = self.get_student(student_id)
+        if not student:
+            return Response({'error': ERROR_STUDENT_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
+        test = self.get_test(student, test_id)
+        if not test:
+            return Response({'error': ERROR_TEST_NOT_FOUND}, status=status.HTTP_404_NOT_FOUND)
+
+        test.delete()
+        return Response({'success': True, 'message': 'Test deleted successfully'})

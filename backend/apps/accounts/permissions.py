@@ -29,10 +29,10 @@ class IsStudentOwnerOrAdmin(permissions.BasePermission):
 def student_has_access(user, target_student):
     """
     Returns True if user is Admin, or if user is the student owning target_student.
-    Returns False if a student attempts to access another student's data.
+    Returns False if unauthenticated or if a student attempts to access another student's data.
     """
     if not user or not user.is_authenticated:
-        return True
+        return False
     if user.role == 'admin' or user.is_superuser:
         return True
     if user.role == 'student':

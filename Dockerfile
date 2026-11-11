@@ -34,6 +34,6 @@ RUN python manage.py collectstatic --noinput
 # Expose the port that Fly will map (use $PORT at runtime)
 EXPOSE 8080
 
-# Gunicorn command – binds to the port provided by Fly via $PORT
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:$PORT"]
+# Gunicorn command – binds to the port provided by Fly via $PORT (defaults to 8080)
+CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8080}"]
 

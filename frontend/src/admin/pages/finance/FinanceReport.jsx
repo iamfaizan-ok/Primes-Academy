@@ -5,6 +5,7 @@ import {
   LucideChevronRight, 
   LucidePlus, 
   LucideEdit, 
+  LucideTrash2,
   LucideWallet, 
   LucideCreditCard, 
   LucideCheckCircle2,
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 import { financeApi } from '../../../services/api/financeApi';
 import Alert from '../../../components/common/Alert';
+import ConfirmModal from '../../../components/common/ConfirmModal';
 
 export default function FinanceReport() {
   const { studentId: paramStudentId } = useParams();
@@ -34,6 +36,25 @@ export default function FinanceReport() {
   const [loadingStudent, setLoadingStudent] = useState(false);
 
   const [alert, setAlert] = useState(null);
+  const [deletePaymentModal, setDeletePaymentModal] = useState({ isOpen: false, payment: null });
+  const [isDeletingPayment, setIsDeletingPayment] = useState(false);
+
+  const handleDeletePayment = async () => {
+    if (!deletePaymentModal.payment || !studentFinance?.student) return;
+    try {
+      setIsDeletingPayment(true);
+      await financeApi.deletePayment(studentFinance.student.id, deletePaymentModal.payment.id);
+      setAlert({ type: 'success', message: 'Payment record deleted successfully.' });
+      setDeletePaymentModal({ isOpen: false, payment: null });
+      const data = await financeApi.getStudentFinance(studentFinance.student.id);
+      setStudentFinance(data);
+      fetchOverview(search);
+    } catch (err) {
+      setAlert({ type: 'error', message: err.message || 'Failed to delete payment.' });
+    } finally {
+      setIsDeletingPayment(false);
+    }
+  };
 
   // Sync route param with selected student
   useEffect(() => {
@@ -324,14 +345,23 @@ export default function FinanceReport() {
                               Rs. {Number(p.amount).toLocaleString()}
                             </td>
                             <td className="py-2.5 px-4 text-right">
-                              <button
-                                onClick={() => navigate(`/admin/finance/${studentFinance.student.id}/edit/${p.id}`)}
-                                className="px-2.5 py-1 rounded-md text-blue-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 transition-all cursor-pointer inline-flex items-center gap-1 text-xs font-medium"
-                                title="Edit Payment"
-                              >
-                                <LucideEdit className="w-3 h-3" />
-                                <span>Edit</span>
-                              </button>
+                              <div className="inline-flex items-center gap-1 justify-end">
+                                <button
+                                  onClick={() => navigate(`/admin/finance/${studentFinance.student.id}/edit/${p.id}`)}
+                                  className="px-2.5 py-1 rounded-md text-blue-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 transition-all cursor-pointer inline-flex items-center gap-1 text-xs font-medium"
+                                  title="Edit Payment"
+                                >
+                                  <LucideEdit className="w-3 h-3" />
+                                  <span>Edit</span>
+                                </button>
+                                <button
+                                  onClick={() => setDeletePaymentModal({ isOpen: true, payment: p })}
+                                  className="p-1.5 rounded-md text-rose-600 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition-all cursor-pointer inline-flex items-center"
+                                  title="Delete Payment"
+                                >
+                                  <LucideTrash2 className="w-3 h-3" />
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))
@@ -444,7 +474,11 @@ export default function FinanceReport() {
                       <LucideUsers className="w-7 h-7 text-slate-300 mx-auto mb-1.5" />
                       <p className="font-semibold text-slate-700 text-xs">No Students Found</p>
                       <p className="text-[11px] text-slate-400 mt-0.5">
-                        {search ? `No student matched "${search}".` : 'Add students in the "All Students" section to track finance.'}
+                        {statusFilter !== 'ALL'
+                          ? `No students found with status "${statusFilter}".`
+                          : search
+                          ? `No student matched "${search}".`
+                          : 'Add students in the "All Students" section to track finance.'}
                       </p>
                     </td>
                   </tr>
@@ -530,6 +564,19 @@ export default function FinanceReport() {
           </div>
         </div>
       )}
+
+      {/* Delete Payment Confirm Modal */}
+      <ConfirmModal
+        isOpen={deletePaymentModal.isOpen}
+        title="Delete Payment Record"
+        message={`Are you sure you want to delete the payment of Rs. ${Number(deletePaymentModal.payment?.amount || 0).toLocaleString()} (Date: ${deletePaymentModal.payment?.payment_date})?`}
+        confirmText="Confirm Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+        isLoading={isDeletingPayment}
+        onConfirm={handleDeletePayment}
+        onClose={() => setDeletePaymentModal({ isOpen: false, payment: null })}
+      />
     </div>
   );
 }

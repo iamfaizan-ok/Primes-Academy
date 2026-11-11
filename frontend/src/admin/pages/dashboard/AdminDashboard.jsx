@@ -8,9 +8,11 @@ import {
   LucideCalendarCheck
 } from 'lucide-react';
 import { studentApi } from '../../../services/api/studentApi';
+import Alert from '../../../components/common/Alert';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   const [stats, setStats] = useState({
     totalStudents: 0,
     totalTests: 0,
@@ -29,7 +31,7 @@ export default function AdminDashboard() {
           });
         }
       } catch (err) {
-        console.error(err);
+        setError(err.message || 'Failed to load dashboard statistics');
       }
     }
     loadStats();
@@ -42,6 +44,8 @@ export default function AdminDashboard() {
         <h1 className="text-xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
         <p className="text-slate-500 text-xs mt-0.5">Welcome back, Admin</p>
       </div>
+
+      {error && <Alert type="error" message={error} onClose={() => setError('')} />}
 
       {/* 3 Metric Stat Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -5,6 +5,7 @@ import {
   LucideTrendingUp, 
   LucideCalendarCheck, 
   LucideCreditCard, 
+  LucideBookOpen,
   LucideLogOut, 
   LucideMenu, 
   LucideX,
@@ -31,6 +32,7 @@ export default function StudentLayout() {
     { name: 'Performance', path: '/student/performance', icon: LucideTrendingUp },
     { name: 'Attendance', path: '/student/attendance', icon: LucideCalendarCheck },
     { name: 'Finance', path: '/student/finance', icon: LucideCreditCard },
+    { name: 'Modules', path: '/student/modules', icon: LucideBookOpen },
   ];
 
   return (

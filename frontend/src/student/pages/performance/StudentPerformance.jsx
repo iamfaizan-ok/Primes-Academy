@@ -81,9 +81,25 @@ export default function StudentPerformance() {
 
       {error && <Alert type="error" message={error} onClose={() => setError('')} />}
 
-      {/* Top 2 Metric Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Card 1: Total Mock Tests */}
+      {/* Top 3 Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Card 1: Overall Band */}
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center shadow-xs">
+              <LucideAward className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Overall Band</p>
+              <h2 className="text-2xl font-bold text-slate-900 mt-0.5">{overallScore}</h2>
+            </div>
+          </div>
+          <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+            Average Score
+          </span>
+        </div>
+
+        {/* Card 2: Total Mock Tests */}
         <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div className="flex items-center gap-3.5">
             <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs">
@@ -99,14 +115,14 @@ export default function StudentPerformance() {
           </span>
         </div>
 
-        {/* Card 2: Latest Test */}
+        {/* Card 3: Latest Test */}
         <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Latest Mock Test Band</p>
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Latest Test Band</p>
             {latestTest ? (
               <>
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">
-                  Test {latestTest.test_number} – <span className="text-blue-600">{latestTest.overall_band}</span>
+                  Test {latestTest.test_number} – <span className="text-blue-600">{Number(latestTest.overall_band).toFixed(1)}</span>
                 </h3>
                 <p className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
                   <LucideCalendar className="w-3 h-3" />
@@ -297,8 +313,16 @@ export default function StudentPerformance() {
                 </span>
               </div>
 
-              {/* Modal Footer Close Button */}
-              <div className="pt-1 flex items-center justify-end">
+              {/* Modal Footer Buttons */}
+              <div className="pt-1 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => navigate(`/student/performance/${selectedTestModal.id}`)}
+                  className="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <LucideEye className="w-3.5 h-3.5" />
+                  <span>Full Page View</span>
+                </button>
                 <button
                   type="button"
                   onClick={() => setSelectedTestModal(null)}

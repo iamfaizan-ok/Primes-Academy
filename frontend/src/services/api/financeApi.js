@@ -35,5 +35,14 @@ export const financeApi = {
     } catch (err) {
       throw new Error(err.response?.data?.error || err.message || 'Failed to update payment record');
     }
+  },
+
+  async deletePayment(studentId, paymentId) {
+    try {
+      const res = await apiClient.delete(`/finance/${studentId}/payments/${paymentId}/`);
+      return res.data;
+    } catch (err) {
+      throw new Error(err.response?.data?.error || err.message || 'Failed to delete payment record');
+    }
   }
 };

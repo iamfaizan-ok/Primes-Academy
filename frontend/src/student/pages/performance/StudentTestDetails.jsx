@@ -110,7 +110,7 @@ export default function StudentTestDetails() {
                   <Icon className="w-6 h-6" />
                 </div>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{m.title}</span>
-                <span className="text-2xl font-extrabold text-slate-900 mt-2">{m.score.toFixed(1)}</span>
+                <span className="text-2xl font-extrabold text-slate-900 mt-2">{Number(m.score).toFixed(1)}</span>
               </div>
             );
           })}
@@ -122,7 +122,7 @@ export default function StudentTestDetails() {
             <div className="text-center">
               <span className="text-xs uppercase tracking-widest text-blue-300 font-bold block">Overall</span>
               <span className="text-4xl font-black text-white tracking-tight mt-1 block">
-                {test.overall_band.toFixed(1)}
+                {Number(test.overall_band).toFixed(1)}
               </span>
             </div>
           </div>

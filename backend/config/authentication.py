@@ -35,9 +35,13 @@ class DualSessionAndTokenAuthentication(BaseAuthentication):
                 student_id_str = token.replace('student_token_', '')
                 if student_id_str.isdigit():
                     student = Student.objects.filter(id=int(student_id_str)).first()
-                    if student and hasattr(student, 'user_account'):
-                        return (student.user_account, None)
-                    elif student:
+                    if student:
+                        try:
+                            if hasattr(student, 'user_account') and student.user_account:
+                                return (student.user_account, None)
+                        except Exception:
+                            pass
+
                         user, _ = User.objects.get_or_create(
                             username=f"student_{student.student_id}",
                             defaults={
@@ -46,6 +50,9 @@ class DualSessionAndTokenAuthentication(BaseAuthentication):
                                 'student_profile': student
                             }
                         )
+                        if user.student_profile_id != student.id:
+                            user.student_profile = student
+                            user.save(update_fields=['student_profile'])
                         return (user, None)
 
         # 2. Check Session

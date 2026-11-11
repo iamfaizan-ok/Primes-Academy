@@ -4,11 +4,13 @@ import {
   LucideCreditCard, 
   LucideArrowRight, 
   LucideChevronRight, 
-  LucideEdit2
+  LucideEdit2,
+  LucideTrash2
 } from 'lucide-react';
 import { financeApi } from '../../../services/api/financeApi';
 import { studentApi } from '../../../services/api/studentApi';
 import Alert from '../../../components/common/Alert';
+import ConfirmModal from '../../../components/common/ConfirmModal';
 
 export default function EditPayment() {
   const { studentId, paymentId } = useParams();
@@ -21,6 +23,8 @@ export default function EditPayment() {
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -42,6 +46,19 @@ export default function EditPayment() {
     }
     load();
   }, [studentId, paymentId]);
+
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      await financeApi.deletePayment(studentId, paymentId);
+      navigate(`/admin/finance/${studentId}`);
+    } catch (err) {
+      setError(err.message || 'Failed to delete payment');
+      setIsDeleteModalOpen(false);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -145,6 +162,14 @@ export default function EditPayment() {
             </button>
             <button
               type="button"
+              onClick={() => setIsDeleteModalOpen(true)}
+              className="w-full sm:w-auto px-4 py-2 rounded-lg border border-rose-200 bg-rose-50 text-xs sm:text-sm font-semibold text-rose-700 hover:bg-rose-100 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <LucideTrash2 className="w-3.5 h-3.5" />
+              <span>Delete</span>
+            </button>
+            <button
+              type="button"
               onClick={() => navigate(`/admin/finance/${studentId}`)}
               className="w-full sm:w-auto px-4 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
             >
@@ -153,6 +178,18 @@ export default function EditPayment() {
           </div>
         </form>
       </div>
+
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        title="Delete Payment"
+        message={`Are you sure you want to delete this payment of Rs. ${Number(amount || 0).toLocaleString()} (Date: ${paymentDate}) for "${student?.name}"?`}
+        confirmText="Confirm Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+        isLoading={isDeleting}
+        onConfirm={handleDelete}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 }

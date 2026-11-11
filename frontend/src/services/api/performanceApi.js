@@ -35,5 +35,14 @@ export const performanceApi = {
     } catch (err) {
       throw new Error(err.response?.data?.error || err.message || 'Failed to update test record');
     }
+  },
+
+  async deleteTest(studentId, testId) {
+    try {
+      const res = await apiClient.delete(`/performance/${studentId}/tests/${testId}/`);
+      return res.data;
+    } catch (err) {
+      throw new Error(err.response?.data?.error || err.message || 'Failed to delete test record');
+    }
   }
 };
