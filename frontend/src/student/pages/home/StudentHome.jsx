@@ -40,19 +40,18 @@ export default function StudentHome() {
           </p>
         </div>
 
-        {/* Visual Badge - Balanced & Sleek */}
+        {/* Visual Badge - Official Student Status */}
         <div className="relative z-10 w-full md:w-auto flex-shrink-0 flex items-center justify-center">
-          <div 
-            onClick={() => navigate('/student/modules')}
-            className="w-36 rounded-xl bg-white/10 hover:bg-white/15 cursor-pointer backdrop-blur-md border border-white/15 p-3.5 flex flex-col items-center justify-center text-center shadow-lg transition-all"
-            title="Click to view IELTS Modules Breakdown"
-          >
+          <div className="w-36 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 p-3.5 flex flex-col items-center justify-center text-center shadow-lg">
             <div className="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center mb-2">
-              <LucideBookOpen className="w-5 h-5" />
+              <LucideAward className="w-5 h-5" />
             </div>
-            <span className="text-[10px] uppercase tracking-wider text-blue-200 font-semibold">Your IELTS</span>
-            <span className="text-sm font-bold text-white">Journey</span>
-            <span className="text-[10px] text-blue-300 mt-1 underline">Modules &rarr;</span>
+            <span className="text-[10px] uppercase tracking-wider text-blue-200 font-semibold">Student ID</span>
+            <span className="text-sm font-mono font-bold text-white">#{currentUser.student_id || '1234'}</span>
+            <span className="text-[10px] text-emerald-300 mt-1 font-semibold flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Active
+            </span>
           </div>
         </div>
       </div>
@@ -124,37 +123,6 @@ export default function StudentHome() {
         </div>
 
         {/* Card 3: Finance */}
-        {/* Card 4: Modules Breakdown */}
-        <div
-          onClick={() => navigate('/student/modules')}
-          className="group cursor-pointer rounded-xl p-5 bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all flex flex-col justify-between"
-        >
-          <div>
-            <div className="flex items-center justify-between">
-              <div className="w-11 h-11 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center shadow-xs">
-                <LucideBookOpen className="w-5 h-5" />
-              </div>
-              <span className="text-xs font-medium text-slate-400 group-hover:text-indigo-600 transition-colors flex items-center gap-1">
-                <span>View</span>
-                <LucideArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </span>
-            </div>
-
-            <div className="mt-4">
-              <h2 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                Modules Breakdown
-              </h2>
-              <p className="text-xs text-slate-500 mt-0.5 leading-normal">
-                Quick view of Listening, Speaking, Reading & Writing scores
-              </p>
-            </div>
-          </div>
-
-          <div className="pt-3.5 mt-4 border-t border-slate-100 flex items-center gap-1.5 text-[11px] text-slate-400 font-medium">
-            <LucideAward className="w-3.5 h-3.5 text-indigo-500" />
-            <span>L, R, W, S Modules</span>
-          </div>
-        </div>
         <div
           onClick={() => navigate('/student/finance')}
           className="group cursor-pointer rounded-xl p-5 bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-amber-300 transition-all flex flex-col justify-between"

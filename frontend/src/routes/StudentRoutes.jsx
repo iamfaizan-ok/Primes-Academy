@@ -1,5 +1,4 @@
 import React from 'react';
-import ModulesBreakdown from '../student/pages/modules/ModulesBreakdown';
 import { Route, Navigate } from 'react-router-dom';
 import StudentLayout from '../student/layouts/StudentLayout';
 import StudentLogin from '../student/pages/auth/StudentLogin';
@@ -37,7 +36,6 @@ export const studentRouteElements = (
       <Route path="performance/:testId" element={<StudentTestDetails />} />
       <Route path="attendance" element={<StudentAttendance />} />
       <Route path="finance" element={<StudentFinance />} />
-      <Route path="modules" element={<ModulesBreakdown />} />
     </Route>
   </>
 );
