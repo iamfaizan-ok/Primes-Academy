@@ -169,7 +169,7 @@ export default function AdminLogin() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] hover:to-[#1b2f56] text-white font-medium text-sm shadow-lg shadow-brand-900/20 hover:shadow-brand-900/30 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+                className="w-full py-3.5 px-6 rounded-xl bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white font-medium text-sm shadow-md transition-colors flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
               >
                 {isLoading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

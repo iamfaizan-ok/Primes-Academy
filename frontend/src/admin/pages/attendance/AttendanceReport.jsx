@@ -121,7 +121,7 @@ export default function AttendanceReport() {
             </div>
             <button
               type="submit"
-              className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] text-white text-xs font-semibold transition-all cursor-pointer"
+              className="px-3 py-1.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs font-semibold transition-colors cursor-pointer"
             >
               Search
             </button>
@@ -249,7 +249,7 @@ export default function AttendanceReport() {
             type="button"
             onClick={handleSave}
             disabled={isSaving}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer disabled:opacity-60"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-60"
           >
             {isSaving ? (
               <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

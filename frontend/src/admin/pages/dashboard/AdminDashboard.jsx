@@ -90,25 +90,25 @@ export default function AdminDashboard() {
         {/* Card 1: All Student Report */}
         <div
           onClick={() => navigate('/admin/students')}
-          className="group cursor-pointer rounded-xl p-5 bg-white border border-slate-200/90 shadow-sm hover:bg-[#0d1728] hover:border-[#0d1728] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+          className="group cursor-pointer rounded-xl p-5 bg-white border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
         >
           <div>
-            <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center mb-3 group-hover:bg-white/10 group-hover:text-blue-300 group-hover:border-transparent transition-colors shadow-2xs">
+            <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 border border-blue-100/80 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 group-hover:scale-105 transition-all duration-200 shadow-2xs">
               <LucideUsers className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-900 group-hover:text-white transition-colors">
+              <h2 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
                 All Student Report
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5 group-hover:text-slate-300 transition-colors">
+              <p className="text-xs text-slate-500 mt-0.5">
                 Manage students & performance
               </p>
             </div>
           </div>
-          <div className="flex justify-end items-center pt-3 mt-3 border-t border-slate-100 group-hover:border-white/10 transition-colors">
-            <span className="text-xs text-slate-400 group-hover:text-blue-200 flex items-center gap-1 font-medium transition-colors">
+          <div className="flex justify-end items-center pt-3 mt-3 border-t border-slate-100">
+            <span className="text-xs text-slate-400 group-hover:text-blue-600 flex items-center gap-1 font-semibold transition-colors">
               <span>Open</span>
-              <LucideArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              <LucideArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
             </span>
           </div>
         </div>
@@ -116,25 +116,25 @@ export default function AdminDashboard() {
         {/* Card 2: Attendance */}
         <div
           onClick={() => navigate('/admin/attendance')}
-          className="group cursor-pointer rounded-xl p-5 bg-white border border-slate-200/90 shadow-sm hover:bg-[#0d1728] hover:border-[#0d1728] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+          className="group cursor-pointer rounded-xl p-5 bg-white border border-slate-200/90 shadow-xs hover:border-emerald-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
         >
           <div>
-            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center mb-3 group-hover:bg-white/10 group-hover:text-emerald-300 group-hover:border-transparent transition-colors shadow-2xs">
+            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100/80 flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 group-hover:scale-105 transition-all duration-200 shadow-2xs">
               <LucideCalendarCheck className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-900 group-hover:text-white transition-colors">
+              <h2 className="text-base font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
                 Attendance
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5 group-hover:text-slate-300 transition-colors">
+              <p className="text-xs text-slate-500 mt-0.5">
                 View & manage attendance
               </p>
             </div>
           </div>
-          <div className="flex justify-end items-center pt-3 mt-3 border-t border-slate-100 group-hover:border-white/10 transition-colors">
-            <span className="text-xs text-slate-400 group-hover:text-emerald-200 flex items-center gap-1 font-medium transition-colors">
+          <div className="flex justify-end items-center pt-3 mt-3 border-t border-slate-100">
+            <span className="text-xs text-slate-400 group-hover:text-emerald-700 flex items-center gap-1 font-semibold transition-colors">
               <span>Open</span>
-              <LucideArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              <LucideArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
             </span>
           </div>
         </div>
@@ -142,25 +142,25 @@ export default function AdminDashboard() {
         {/* Card 3: Finance Report */}
         <div
           onClick={() => navigate('/admin/finance')}
-          className="group cursor-pointer rounded-xl p-5 bg-white border border-slate-200/90 shadow-sm hover:bg-[#0d1728] hover:border-[#0d1728] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
+          className="group cursor-pointer rounded-xl p-5 bg-white border border-slate-200/90 shadow-xs hover:border-amber-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
         >
           <div>
-            <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-700 border border-amber-100 flex items-center justify-center mb-3 group-hover:bg-white/10 group-hover:text-amber-300 group-hover:border-transparent transition-colors shadow-2xs">
+            <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-700 border border-amber-100/80 flex items-center justify-center mb-3 group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600 group-hover:scale-105 transition-all duration-200 shadow-2xs">
               <LucideWallet className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-900 group-hover:text-white transition-colors">
+              <h2 className="text-base font-bold text-slate-900 group-hover:text-amber-700 transition-colors">
                 Finance Report
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5 group-hover:text-slate-300 transition-colors">
+              <p className="text-xs text-slate-500 mt-0.5">
                 Track payments & balances
               </p>
             </div>
           </div>
-          <div className="flex justify-end items-center pt-3 mt-3 border-t border-slate-100 group-hover:border-white/10 transition-colors">
-            <span className="text-xs text-slate-400 group-hover:text-amber-200 flex items-center gap-1 font-medium transition-colors">
+          <div className="flex justify-end items-center pt-3 mt-3 border-t border-slate-100">
+            <span className="text-xs text-slate-400 group-hover:text-amber-700 flex items-center gap-1 font-semibold transition-colors">
               <span>Open</span>
-              <LucideArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              <LucideArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
             </span>
           </div>
         </div>

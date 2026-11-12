@@ -326,7 +326,7 @@ export default function StudentPerformance() {
                 <button
                   type="button"
                   onClick={() => setSelectedTestModal(null)}
-                  className="w-full sm:w-auto px-4 py-1.5 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] text-white text-xs font-semibold shadow-2xs transition-all cursor-pointer"
+                  className="w-full sm:w-auto px-4 py-1.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
                 >
                   Close
                 </button>

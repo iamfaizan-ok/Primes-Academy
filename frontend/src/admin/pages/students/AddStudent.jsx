@@ -282,7 +282,7 @@ export default function AddStudent() {
               <button
                 type="submit"
                 disabled={isGeneratingId}
-                className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-[#0d1728] via-[#111e38] to-[#162544] hover:from-[#162544] hover:to-[#0d1728] text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-60 cursor-pointer"
+                className="px-4 py-1.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white font-bold text-xs shadow-xs transition-colors flex items-center gap-1.5 disabled:opacity-60 cursor-pointer"
               >
                 {isGeneratingId ? (
                   <>
@@ -407,7 +407,7 @@ export default function AddStudent() {
                 type="button"
                 onClick={handleFinalSave}
                 disabled={isSaving}
-                className="flex-1 py-1.5 px-4 rounded-lg bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer"
+                className="flex-1 py-1.5 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-colors flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer"
               >
                 {isSaving ? (
                   <>

@@ -124,7 +124,7 @@ export default function AddAmount() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full sm:flex-1 py-2 px-4 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] text-white font-semibold text-xs sm:text-sm shadow-sm transition-all flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer"
+              className="w-full sm:flex-1 py-2 px-4 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white font-semibold text-xs sm:text-sm shadow-xs transition-colors flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer"
             >
               {isLoading ? (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

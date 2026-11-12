@@ -122,7 +122,7 @@ export default function TestDetails() {
           </button>
           <button
             onClick={() => navigate(`/admin/performance/${student.id}/test/${test.id}/edit`)}
-            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] text-white text-xs font-semibold shadow-2xs transition-all cursor-pointer"
+            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
           >
             <LucideEdit className="w-3.5 h-3.5" />
             <span>Edit Test</span>

@@ -99,7 +99,7 @@ export default function StudentList() {
 
         <button
           onClick={() => navigate('/admin/students/add')}
-          className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] hover:to-[#1b2f56] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+          className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs font-semibold shadow-sm transition-colors cursor-pointer"
         >
           <LucidePlus className="w-3.5 h-3.5" />
           <span>Add New Student</span>

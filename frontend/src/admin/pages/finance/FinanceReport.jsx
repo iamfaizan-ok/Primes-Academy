@@ -308,7 +308,7 @@ export default function FinanceReport() {
 
                   <button
                     onClick={() => navigate(`/admin/finance/${studentFinance.student.id}/add`)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] hover:from-[#111e38] text-white text-xs font-semibold shadow-2xs transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
                   >
                     <LucidePlus className="w-3.5 h-3.5" />
                     <span>Add Amount</span>
@@ -430,7 +430,7 @@ export default function FinanceReport() {
               </div>
               <button
                 type="submit"
-                className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#0d1728] to-[#162544] text-white text-xs font-semibold shadow-2xs cursor-pointer"
+                className="px-3.5 py-1.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
               >
                 Search
               </button>
