@@ -1,16 +1,19 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate, login, logout
 from .models import User
 try:
     from apps.students.models import Student
+    from apps.accounts.tokens import generate_auth_token
 except ImportError:
     from backend.apps.students.models import Student
+    from backend.apps.accounts.tokens import generate_auth_token
 from .serializers import AdminLoginSerializer, StudentLoginSerializer, UserSerializer
 
 class AdminLoginView(APIView):
-    permission_classes = []
+    permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = AdminLoginSerializer(data=request.data)
@@ -28,8 +31,8 @@ class AdminLoginView(APIView):
             )
 
         login(request, user)
-        # Token identifier for client storage
-        token = f"admin_token_{user.id}"
+        # Cryptographically signed auth token
+        token = generate_auth_token(user, 'admin')
         return Response({
             'success': True,
             'token': token,
@@ -42,7 +45,7 @@ class AdminLoginView(APIView):
         })
 
 class StudentLoginView(APIView):
-    permission_classes = []
+    permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = StudentLoginSerializer(data=request.data)
@@ -75,7 +78,8 @@ class StudentLoginView(APIView):
             user.save()
 
         login(request, user)
-        token = f"student_token_{student.id}"
+        # Cryptographically signed auth token
+        token = generate_auth_token(user, 'student')
 
         return Response({
             'success': True,

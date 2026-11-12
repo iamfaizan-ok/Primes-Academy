@@ -37,7 +37,7 @@ export const studentRouteElements = (
       <Route path="performance/:testId" element={<StudentTestDetails />} />
       <Route path="attendance" element={<StudentAttendance />} />
       <Route path="finance" element={<StudentFinance />} />
-    <Route path="modules" element={<ModulesBreakdown />} />
+      <Route path="modules" element={<ModulesBreakdown />} />
     </Route>
   </>
 );

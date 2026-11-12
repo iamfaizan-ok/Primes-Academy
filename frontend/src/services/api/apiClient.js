@@ -25,8 +25,13 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Clear token if expired or unauthorized
-      // (Optional redirect logic can be dispatched)
+      const reqUrl = error.config?.url || '';
+      const isLoginRequest = reqUrl.includes('/login') || reqUrl.includes('/auth/admin/login') || reqUrl.includes('/auth/student/login');
+      if (!isLoginRequest) {
+        localStorage.removeItem('primes_auth_token');
+        localStorage.removeItem('primes_user_role');
+        localStorage.removeItem('primes_user_profile');
+      }
     }
     return Promise.reject(error);
   }

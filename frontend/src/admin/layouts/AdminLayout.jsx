@@ -146,19 +146,25 @@ export default function AdminLayout() {
               </button>
 
               {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 animate-in fade-in zoom-in-95">
-                  <div className="px-4 py-2 border-b border-slate-100">
-                    <p className="text-xs font-semibold text-slate-800">Admin Account</p>
-                    <p className="text-[11px] text-slate-500 truncate">admin@primesacademy.com</p>
+                <>
+                  <div 
+                    className="fixed inset-0 z-40 cursor-default" 
+                    onClick={() => setIsProfileOpen(false)} 
+                  />
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 animate-in fade-in zoom-in-95">
+                    <div className="px-4 py-2 border-b border-slate-100">
+                      <p className="text-xs font-semibold text-slate-800">Admin Account</p>
+                      <p className="text-[11px] text-slate-500 truncate">admin@primesacademy.com</p>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 flex items-center gap-2 cursor-pointer"
+                    >
+                      <LucideLogOut className="w-3.5 h-3.5" />
+                      Sign out
+                    </button>
                   </div>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 flex items-center gap-2 cursor-pointer"
-                  >
-                    <LucideLogOut className="w-3.5 h-3.5" />
-                    Sign out
-                  </button>
-                </div>
+                </>
               )}
             </div>
           </div>

@@ -46,7 +46,7 @@ class FinanceOverviewListView(APIView):
             )
 
         search = request.query_params.get('search', '').strip()
-        students_qs = Student.objects.all().order_by('name')
+        students_qs = Student.objects.prefetch_related('payments').all().order_by('name')
         if search:
             students_qs = students_qs.filter(
                 Q(name__icontains=search) | Q(student_id__icontains=search)
@@ -57,13 +57,13 @@ class FinanceOverviewListView(APIView):
         total_receivable = Decimal('0.00')
 
         for student in students_qs:
-            payments = Payment.objects.filter(student=student)
-            paid = payments.aggregate(Sum('amount'))['amount__sum'] or Decimal('0.00')
+            payments_list = list(student.payments.all())
+            paid = sum((p.amount for p in payments_list), Decimal('0.00'))
             total_collected += paid
             student_fee = getattr(student, 'total_fee', None) or STANDARD_ACADEMY_FEE
             total_receivable += student_fee
             remaining = max(Decimal('0.00'), student_fee - paid)
-            last_payment = payments.order_by('-payment_date', '-created_at').first()
+            last_payment = payments_list[0] if payments_list else None
 
             if paid >= student_fee:
                 status_label = 'Paid in Full'
@@ -80,7 +80,7 @@ class FinanceOverviewListView(APIView):
                 'totalFee': float(student_fee),
                 'totalPaid': float(paid),
                 'remaining': float(remaining),
-                'paymentsCount': payments.count(),
+                'paymentsCount': len(payments_list),
                 'lastPaymentDate': last_payment.payment_date.strftime('%d-%m-%Y') if last_payment else None,
                 'status': status_label,
             })
