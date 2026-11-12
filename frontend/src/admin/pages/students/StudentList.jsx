@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { 
   LucidePlus, 
   LucideSearch, 
@@ -17,6 +17,7 @@ import Alert from '../../../components/common/Alert';
 
 export default function StudentList() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
@@ -25,6 +26,13 @@ export default function StudentList() {
   const [alert, setAlert] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setAlert({ type: 'success', message: location.state.message });
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   const fetchStudents = async (query = '') => {
     try {
