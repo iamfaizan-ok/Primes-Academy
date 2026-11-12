@@ -73,29 +73,42 @@ export default function StudentFinance() {
 
       {error && <Alert type="error" message={error} onClose={() => setError('')} />}
 
-      {/* Top 2 Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* Top Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+        {/* Total Fee */}
+        <div className="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideWallet className="w-5 h-5" />
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Agreed Course Fee</p>
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900 mt-0.5">
+              Rs. {Number(data?.totalFee || 60000).toLocaleString()}
+            </h2>
+          </div>
+        </div>
+
         {/* Total Paid */}
-        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center gap-4">
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs">
+        <div className="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs shrink-0">
             <LucideCheckCircle2 className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Paid</p>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Paid</p>
+            <h2 className="text-lg sm:text-xl font-bold text-emerald-700 mt-0.5">
               Rs. {Number(totalPaid).toLocaleString()}
             </h2>
           </div>
         </div>
 
         {/* Remaining Balance */}
-        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center gap-4">
-          <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-xs">
-            <LucideWallet className="w-5 h-5" />
+        <div className="bg-white rounded-xl p-4 border border-slate-200/90 shadow-sm flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideWallet className="w-5 h-5 text-amber-600" />
           </div>
           <div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Remaining Balance</p>
-            <h2 className="text-xl sm:text-2xl font-bold text-amber-800 mt-0.5">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Remaining Balance</p>
+            <h2 className="text-lg sm:text-xl font-bold text-amber-800 mt-0.5">
               Rs. {Number(remaining).toLocaleString()}
             </h2>
           </div>
@@ -109,8 +122,8 @@ export default function StudentFinance() {
             <h3 className="text-sm sm:text-base font-bold text-slate-900">Payment History</h3>
             <p className="text-xs text-slate-500 mt-0.5">Verified installments logged in PostgreSQL</p>
           </div>
-          <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-            Standard Fee: Rs. 60,000
+          <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">
+            Course: {data?.student?.course || 'IELTS Academic'}
           </span>
         </div>
 

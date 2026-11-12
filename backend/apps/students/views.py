@@ -30,6 +30,16 @@ def resolve_student(pk):
     except Exception:
         return None
 
+class GenerateStudentIdView(APIView):
+    def get(self, request):
+        if not is_admin_user(request.user):
+            return Response(
+                {'error': 'Administrator authentication required.'}, 
+                status=status.HTTP_401_UNAUTHORIZED if not request.user.is_authenticated else status.HTTP_403_FORBIDDEN
+            )
+        unique_id = Student.generate_unique_student_id()
+        return Response({'student_id': unique_id})
+
 class StudentListCreateView(APIView):
     def get(self, request):
         if not request.user.is_authenticated:

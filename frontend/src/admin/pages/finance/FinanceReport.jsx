@@ -238,6 +238,19 @@ export default function FinanceReport() {
                   </p>
                 </div>
 
+                {/* Total Agreed Fee Badge */}
+                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between shadow-2xs">
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Agreed Total Fee</p>
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mt-0.5">
+                      Rs. {Number(studentFinance.totalFee || 60000).toLocaleString()}
+                    </h3>
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-slate-200/60 text-slate-700 flex items-center justify-center">
+                    <LucideCreditCard className="w-4 h-4" />
+                  </div>
+                </div>
+
                 {/* Total Paid Badge */}
                 <div className="p-3.5 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-between shadow-2xs">
                   <div>

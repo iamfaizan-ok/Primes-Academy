@@ -54,15 +54,18 @@ class FinanceOverviewListView(APIView):
 
         students_data = []
         total_collected = Decimal('0.00')
+        total_receivable = Decimal('0.00')
 
         for student in students_qs:
             payments = Payment.objects.filter(student=student)
             paid = payments.aggregate(Sum('amount'))['amount__sum'] or Decimal('0.00')
             total_collected += paid
-            remaining = max(Decimal('0.00'), STANDARD_ACADEMY_FEE - paid)
+            student_fee = getattr(student, 'total_fee', None) or STANDARD_ACADEMY_FEE
+            total_receivable += student_fee
+            remaining = max(Decimal('0.00'), student_fee - paid)
             last_payment = payments.order_by('-payment_date', '-created_at').first()
 
-            if paid >= STANDARD_ACADEMY_FEE:
+            if paid >= student_fee:
                 status_label = 'Paid in Full'
             elif paid > 0:
                 status_label = 'Partial'
@@ -73,6 +76,8 @@ class FinanceOverviewListView(APIView):
                 'id': student.id,
                 'student_id': student.student_id,
                 'name': student.name,
+                'course': getattr(student, 'course', 'IELTS Academic'),
+                'totalFee': float(student_fee),
                 'totalPaid': float(paid),
                 'remaining': float(remaining),
                 'paymentsCount': payments.count(),
@@ -81,7 +86,6 @@ class FinanceOverviewListView(APIView):
             })
 
         total_students_count = Student.objects.count()
-        total_receivable = total_students_count * STANDARD_ACADEMY_FEE
         total_remaining = max(Decimal('0.00'), total_receivable - total_collected)
 
         return Response({
@@ -111,11 +115,13 @@ class StudentFinanceView(APIView):
 
         payments = Payment.objects.filter(student=student).order_by('-payment_date', '-created_at')
         total_paid = payments.aggregate(Sum('amount'))['amount__sum'] or Decimal('0.00')
-        remaining = max(Decimal('0.00'), STANDARD_ACADEMY_FEE - total_paid)
+        student_fee = getattr(student, 'total_fee', None) or STANDARD_ACADEMY_FEE
+        remaining = max(Decimal('0.00'), student_fee - total_paid)
 
         return Response({
             'student': StudentSerializer(student).data,
             'payments': PaymentSerializer(payments, many=True).data,
+            'totalFee': float(student_fee),
             'totalPaid': float(total_paid),
             'remaining': float(remaining)
         })
