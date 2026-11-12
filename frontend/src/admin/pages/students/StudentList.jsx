@@ -143,7 +143,7 @@ export default function StudentList() {
               <tr>
                 <th className="py-2.5 px-4 w-12">#</th>
                 <th className="py-2.5 px-4">Name</th>
-                <th className="py-2.5 px-4">Unique ID</th>
+                <th className="py-2.5 px-4">Student ID</th>
                 <th className="py-2.5 px-4 text-center">Quick Links</th>
                 <th className="py-2.5 px-4 text-right">Action</th>
               </tr>

@@ -466,7 +466,7 @@ export default function FinanceReport() {
                 <tr>
                   <th className="py-2.5 px-4 w-12">#</th>
                   <th className="py-2.5 px-4">Student</th>
-                  <th className="py-2.5 px-4">Unique ID</th>
+                  <th className="py-2.5 px-4">Student ID</th>
                   <th className="py-2.5 px-4">Total Paid</th>
                   <th className="py-2.5 px-4">Remaining Balance</th>
                   <th className="py-2.5 px-4">Status</th>
@@ -517,7 +517,7 @@ export default function FinanceReport() {
                         </span>
                       </td>
 
-                      {/* Unique ID */}
+                      {/* Student ID */}
                       <td className="py-2.5 px-4">
                         <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-slate-100 text-slate-800 border border-slate-200">
                           {s.student_id}

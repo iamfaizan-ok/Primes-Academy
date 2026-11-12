@@ -84,7 +84,7 @@ export default function IndividualAttendance() {
           <div>
             <h2 className="text-base font-bold text-slate-900">{student.name}</h2>
             <p className="text-[11px] font-mono font-semibold text-slate-500 mt-0.5">
-              Unique ID: {student.student_id}
+              Student ID: {student.student_id}
             </p>
           </div>
         </div>

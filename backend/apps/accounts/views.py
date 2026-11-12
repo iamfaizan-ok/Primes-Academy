@@ -60,7 +60,7 @@ class StudentLoginView(APIView):
             student = Student.objects.get(student_id=student_id, name__iexact=name)
         except Student.DoesNotExist:
             return Response(
-                {'error': 'Invalid Student Name or Unique ID. Only registered students can sign in.'}, 
+                {'error': 'Invalid Student Name or Student ID. Only registered students can sign in.'}, 
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
