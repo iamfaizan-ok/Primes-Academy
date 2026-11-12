@@ -46,5 +46,5 @@ USER appuser
 # Expose Fly application port
 EXPOSE 8080
 
-# Run database migrations and start Gunicorn bound to 0.0.0.0:8080
-CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8080}"]
+# Run database migrations and start Gunicorn with multi-worker concurrency and load balancing config
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn -c gunicorn.conf.py config.wsgi:application"]

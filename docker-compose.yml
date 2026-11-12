@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Nginx Load Balancer & Reverse Proxy
+  loadbalancer:
+    image: nginx:alpine
+    container_name: primes_loadbalancer
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web
+    restart: always
+
+  # Scalable Django Application Service (Scale with: docker compose up --scale web=3)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-primes-production-secret-key-2026}
+      - DEBUG=False
+      - DB_HOST=db
+      - DB_NAME=${DB_NAME:-primesAcademy}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - DB_PORT=5432
+      - DB_CONN_MAX_AGE=600
+      - WEB_CONCURRENCY=4
+      - GUNICORN_THREADS=4
+      - PORT=8080
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+
+  # PostgreSQL Database Service
+  db:
+    image: postgres:16-alpine
+    container_name: primes_postgres
+    environment:
+      - POSTGRES_DB=${DB_NAME:-primesAcademy}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d primesAcademy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+volumes:
+  postgres_data:

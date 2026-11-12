@@ -77,8 +77,10 @@ DATABASES = {
 }
 
 database_url = os.getenv('DATABASE_URL')
+conn_max_age = int(os.getenv('DB_CONN_MAX_AGE', '600'))
+
 if database_url:
-    DATABASES['default'] = dj_database_url.config(default=database_url, conn_max_age=600)
+    DATABASES['default'] = dj_database_url.config(default=database_url, conn_max_age=conn_max_age)
 elif os.getenv('DB_HOST'):
     DATABASES['default'] = {
         "ENGINE": "django.db.backends.postgresql",
@@ -87,6 +89,7 @@ elif os.getenv('DB_HOST'):
         "PASSWORD": os.environ.get("DB_PASSWORD", ""),
         "HOST": os.environ.get("DB_HOST"),
         "PORT": os.environ.get("DB_PORT", "5432"),
+        "CONN_MAX_AGE": conn_max_age,
     }
 else:
     DATABASES['default'] = {
