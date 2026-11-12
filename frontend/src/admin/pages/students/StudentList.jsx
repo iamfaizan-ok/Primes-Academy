@@ -125,9 +125,8 @@ export default function StudentList() {
             <thead className="bg-[#f8fafc] text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
               <tr>
                 <th className="py-2.5 px-4 w-12">#</th>
-                <th className="py-2.5 px-4">Student & Course</th>
+                <th className="py-2.5 px-4">Name</th>
                 <th className="py-2.5 px-4">Unique ID</th>
-                <th className="py-2.5 px-4">Total Fee</th>
                 <th className="py-2.5 px-4 text-center">Quick Links</th>
                 <th className="py-2.5 px-4 text-right">Action</th>
               </tr>
@@ -135,14 +134,14 @@ export default function StudentList() {
             <tbody className="divide-y divide-slate-100">
               {loading ? (
                 <tr>
-                  <td colSpan="6" className="py-10 text-center text-slate-400">
+                  <td colSpan="5" className="py-10 text-center text-slate-400">
                     <div className="inline-block w-5 h-5 border-2 border-slate-300 border-t-blue-600 rounded-full animate-spin mb-1.5" />
                     <p className="text-xs">Loading students...</p>
                   </td>
                 </tr>
               ) : paginatedStudents.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="py-10 text-center text-slate-500">
+                  <td colSpan="5" className="py-10 text-center text-slate-500">
                     <LucideUser className="w-7 h-7 text-slate-300 mx-auto mb-1.5" />
                     <p className="font-semibold text-slate-800 text-xs">No Students Found</p>
                     <p className="text-[11px] text-slate-400 mt-0.5">
@@ -172,11 +171,6 @@ export default function StudentList() {
                     <td className="py-2.5 px-4">
                       <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-slate-100 text-slate-800 border border-slate-200">
                         {student.student_id}
-                      </span>
-                    </td>
-                    <td className="py-2.5 px-4">
-                      <span className="font-mono font-bold text-slate-800 text-xs">
-                        Rs. {Number(student.total_fee || 60000).toLocaleString()}
                       </span>
                     </td>
                     <td className="py-2.5 px-4 text-center">
