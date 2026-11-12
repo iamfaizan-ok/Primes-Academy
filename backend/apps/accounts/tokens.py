@@ -26,3 +26,4 @@ def verify_auth_token(token_str, max_age=86400 * 30):
         return signer.unsign_object(token_str, max_age=max_age)
     except (BadSignature, SignatureExpired, Exception):
         return None
+
