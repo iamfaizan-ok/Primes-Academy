@@ -3,37 +3,48 @@ FROM python:3.12-slim AS builder
 WORKDIR /app
 
 # Install system build dependencies
-RUN apt-get update && apt-get install -y gcc libpq-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies (cached layer)
+# Create virtual environment in /opt/venv
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install Python dependencies into the virtual environment
 COPY backend/requirements.txt .
-RUN python -m pip install --upgrade pip && pip install --user -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # ---- Runtime stage ------------------------------------------------
 FROM python:3.12-slim
 WORKDIR /app
 
-# Copy installed packages from builder
-COPY --from=builder /root/.local /root/.local
-ENV PATH=/root/.local/bin:$PATH
+# Install runtime PostgreSQL library
+RUN apt-get update && apt-get install -y --no-install-recommends libpq5 && rm -rf /var/lib/apt/lists/*
 
-# Copy the backend source code (includes config folder)
+# Copy virtual environment from builder
+COPY --from=builder /opt/venv /opt/venv
+
+# Ensure the virtual environment's bin directory is first in PATH
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Python and Django environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV DJANGO_SETTINGS_MODULE=config.settings
+ENV PORT=8080
+
+# Copy backend source code
 COPY backend/ .
 
-# Create non‑root user for security
-RUN useradd -m appuser && chown -R appuser /app
-USER appuser
-
-# Environment variables
-ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE=config.settings
-
-# Collect static files (required for WhiteNoise)
+# Collect static files for WhiteNoise
 RUN python manage.py collectstatic --noinput
 
-# Expose the port that Fly will map (use $PORT at runtime)
+# Create non-root user and adjust ownership for security
+RUN useradd -m appuser && chown -R appuser:appuser /app /opt/venv
+USER appuser
+
+# Expose Fly application port
 EXPOSE 8080
 
-# Gunicorn command – binds to the port provided by Fly via $PORT (defaults to 8080)
-CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8080}"]
-
+# Run database migrations and start Gunicorn bound to 0.0.0.0:8080
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8080}"]
