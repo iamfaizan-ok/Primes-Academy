@@ -34,6 +34,15 @@ export default function StudentList() {
     }
   }, [location]);
 
+  // Auto-dismiss alert after 5 seconds
+  useEffect(() => {
+    if (!alert) return;
+    const timer = setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [alert]);
+
   const fetchStudents = async (query = '') => {
     try {
       setLoading(true);
