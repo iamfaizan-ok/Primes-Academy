@@ -5,7 +5,8 @@ import {
   LucideFileSpreadsheet, 
   LucideWallet, 
   LucideArrowRight,
-  LucideCalendarCheck
+  LucideCalendarCheck,
+  LucideUserPlus
 } from 'lucide-react';
 import { studentApi } from '../../../services/api/studentApi';
 import Alert from '../../../components/common/Alert';
@@ -39,10 +40,22 @@ export default function AdminDashboard() {
 
   return (
     <div className="w-full max-w-7xl mx-auto space-y-5 sm:space-y-6">
-      {/* Top Welcome Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
-        <p className="text-slate-500 text-sm mt-0.5">Welcome back, Administrator</p>
+      {/* Top Welcome Header & Quick Action Button */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
+          <p className="text-slate-500 text-sm mt-0.5">Welcome back, Administrator</p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => navigate('/admin/students/add')}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-sm font-semibold transition-all shadow-sm hover:shadow cursor-pointer self-start sm:self-auto min-h-[42px]"
+          title="Register New Student"
+        >
+          <LucideUserPlus className="w-4 h-4" />
+          <span>Add New Student</span>
+        </button>
       </div>
 
       {error && <Alert type="error" message={error} onClose={() => setError('')} />}

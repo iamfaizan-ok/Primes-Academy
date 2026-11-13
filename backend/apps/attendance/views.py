@@ -84,7 +84,9 @@ class AttendanceMatrixView(APIView):
 
         return Response({
             'days': rolling_days,
-            'matrix': matrix
+            'matrix': matrix,
+            'isBeforeCutoff': timezone.localtime().hour < 12,
+            'cutoffTime': '12:00 PM'
         })
 
 class BulkAttendanceSaveView(APIView):
@@ -99,10 +101,26 @@ class BulkAttendanceSaveView(APIView):
         if not isinstance(entries, list):
             return Response({'error': 'Expected a list of attendance entries'}, status=status.HTTP_400_BAD_REQUEST)
 
+        today = timezone.localdate()
+        today_str = today.strftime('%Y-%m-%d')
+        now_hour = timezone.localtime().hour
+
+        # Rule: Today's attendance can only be modified until 12:00 PM
+        if now_hour >= 12 and not request.data.get('force_override'):
+            return Response(
+                {'error': "Attendance editing closed: Today's attendance can only be modified until 12:00 PM."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        saved_count = 0
         for item in entries:
             student_id = item.get('student_id')
             date_str = item.get('date')
             att_status = item.get('status', 'Present')
+
+            # Rule: Previous attendance cannot be changed
+            if date_str != today_str:
+                continue
 
             try:
                 student = resolve_student(student_id)
@@ -112,10 +130,14 @@ class BulkAttendanceSaveView(APIView):
                         attendance_date=date_str,
                         defaults={'status': att_status}
                     )
+                    saved_count += 1
             except Exception:
                 continue
 
-        return Response({'success': True, 'message': 'Attendance successfully synchronized.'})
+        return Response({
+            'success': True, 
+            'message': f"Today's attendance successfully saved ({saved_count} records updated. Previous attendance is locked)."
+        })
 
 class StudentAttendanceDetailView(APIView):
     def get(self, request, student_id):
