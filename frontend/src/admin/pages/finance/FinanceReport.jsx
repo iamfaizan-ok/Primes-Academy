@@ -146,7 +146,7 @@ export default function FinanceReport() {
           </p>
         </div>
 
-        {selectedStudentId ? (
+        {selectedStudentId && (
           <button
             onClick={handleBackToOverview}
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold shadow-xs transition-all cursor-pointer self-start sm:self-auto"
@@ -154,66 +154,59 @@ export default function FinanceReport() {
             <LucideArrowLeft className="w-4 h-4" />
             <span>All Students Finance</span>
           </button>
-        ) : (
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Live PostgreSQL Records
-            </span>
-          </div>
         )}
       </div>
 
       {alert && <Alert type={alert.type} message={alert.message} onClose={() => setAlert(null)} />}
 
       {/* TOP 3 METRICS SUMMARY CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
         {/* Total Collected */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Collected</p>
-            <h2 className="text-3xl font-extrabold text-slate-900 mt-1">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Collected</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
               Rs. {Number(overview?.summary?.totalCollected || 0).toLocaleString()}
             </h2>
-            <p className="text-xs text-emerald-600 font-semibold mt-1 flex items-center gap-1">
+            <p className="text-[11px] text-emerald-600 font-semibold mt-1 flex items-center gap-1">
               <LucideTrendingUp className="w-3.5 h-3.5" />
               Tuition payments received
             </p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs">
-            <LucideCheckCircle2 className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideCheckCircle2 className="w-5 h-5" />
           </div>
         </div>
 
         {/* Total Pending / Remaining */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Receivables</p>
-            <h2 className="text-3xl font-extrabold text-amber-700 mt-1">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Pending Receivables</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-amber-700 tracking-tight mt-1">
               Rs. {Number(overview?.summary?.totalRemaining || 0).toLocaleString()}
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-[11px] text-slate-400 mt-1">
               Out of Rs. {Number(overview?.summary?.totalReceivable || 0).toLocaleString()} expected
             </p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-xs">
-            <LucideWallet className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideWallet className="w-5 h-5" />
           </div>
         </div>
 
         {/* Total Students in Finance */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Registered Students</p>
-            <h2 className="text-3xl font-extrabold text-slate-900 mt-1">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Registered Students</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">
               {overview?.summary?.totalStudents || 0}
             </h2>
-            <p className="text-xs text-blue-600 font-semibold mt-1">
+            <p className="text-[11px] text-blue-600 font-semibold mt-1">
               Standard Fee: Rs. 60,000 / student
             </p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs">
-            <LucideUsers className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideUsers className="w-5 h-5" />
           </div>
         </div>
       </div>
