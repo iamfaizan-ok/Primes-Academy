@@ -82,49 +82,49 @@ export default function StudentPerformance() {
       {error && <Alert type="error" message={error} onClose={() => setError('')} />}
 
       {/* Top 3 Metric Cards - Senior Executive Standard */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
         {/* Card 1: Overall Band */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Overall Band</span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/80">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Overall Band</span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/80">
                 Average Score
               </span>
             </div>
-            <span className="text-3xl font-extrabold text-slate-900 mt-1 block leading-tight">{overallScore}</span>
+            <span className="text-xl sm:text-2xl font-bold text-slate-900 mt-1 block tracking-tight">{overallScore}</span>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center shadow-xs">
-            <LucideAward className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideAward className="w-5 h-5" />
           </div>
         </div>
 
         {/* Card 2: Total Mock Tests */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Mock Tests</span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200/80">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Mock Tests</span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200/80">
                 Recorded Tests
               </span>
             </div>
-            <span className="text-3xl font-extrabold text-slate-900 mt-1 block leading-tight">{tests.length}</span>
+            <span className="text-xl sm:text-2xl font-bold text-slate-900 mt-1 block tracking-tight">{tests.length}</span>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs">
-            <LucideFileSpreadsheet className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideFileSpreadsheet className="w-5 h-5" />
           </div>
         </div>
 
         {/* Card 3: Latest Test */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Latest Test Band</span>
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Latest Test Band</span>
             {latestTest ? (
               <>
-                <span className="text-2xl sm:text-3xl font-extrabold text-blue-600 mt-1 block leading-tight">
+                <span className="text-base sm:text-lg font-bold text-blue-600 mt-1 block tracking-tight">
                   Test {latestTest.test_number} – <span className="font-mono">{Number(latestTest.overall_band).toFixed(1)}</span>
                 </span>
-                <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5 font-medium">
+                <p className="text-[11px] text-slate-500 mt-1 flex items-center gap-1.5 font-medium">
                   <LucideCalendar className="w-3.5 h-3.5 text-slate-400" />
                   <span>{latestTest.test_date} ({latestTest.day_name || 'Saturday'})</span>
                 </p>
@@ -133,8 +133,8 @@ export default function StudentPerformance() {
               <p className="text-xs text-slate-500 mt-1">No tests recorded yet.</p>
             )}
           </div>
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs">
-            <LucideTrendingUp className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideTrendingUp className="w-5 h-5" />
           </div>
         </div>
       </div>

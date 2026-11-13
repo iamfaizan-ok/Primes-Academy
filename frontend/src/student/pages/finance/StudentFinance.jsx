@@ -76,41 +76,41 @@ export default function StudentFinance() {
       {/* Top Metric Cards - Senior Executive Standard */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         {/* Total Fee */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Agreed Course Fee</span>
-            <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 block leading-tight">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Agreed Course Fee</span>
+            <span className="text-xl sm:text-2xl font-bold text-slate-900 mt-1 block tracking-tight">
               Rs. {Number(data?.totalFee || 60000).toLocaleString()}
             </span>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs shrink-0">
-            <LucideWallet className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideWallet className="w-5 h-5" />
           </div>
         </div>
 
         {/* Total Paid */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Total Paid</span>
-            <span className="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1 block leading-tight">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Total Paid</span>
+            <span className="text-xl sm:text-2xl font-bold text-emerald-600 mt-1 block tracking-tight">
               Rs. {Number(totalPaid).toLocaleString()}
             </span>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs shrink-0">
-            <LucideCheckCircle2 className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideCheckCircle2 className="w-5 h-5" />
           </div>
         </div>
 
         {/* Remaining Balance */}
-        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Remaining Balance</span>
-            <span className="text-2xl sm:text-3xl font-extrabold text-amber-600 mt-1 block leading-tight">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Remaining Balance</span>
+            <span className="text-xl sm:text-2xl font-bold text-amber-600 mt-1 block tracking-tight">
               Rs. {Number(remaining).toLocaleString()}
             </span>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-xs shrink-0">
-            <LucideWallet className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-xs shrink-0">
+            <LucideWallet className="w-5 h-5" />
           </div>
         </div>
       </div>
