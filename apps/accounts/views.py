@@ -88,6 +88,8 @@ class StudentLoginView(APIView):
                 'id': student.id,
                 'student_id': student.student_id,
                 'name': student.name,
+                'course': getattr(student, 'course', 'IELTS Academic'),
+                'created_at': student.created_at.strftime('%Y-%m-%d') if getattr(student, 'created_at', None) else None,
                 'role': 'student'
             }
         })

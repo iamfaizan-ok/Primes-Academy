@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   LucideTrendingUp, 
@@ -9,13 +9,53 @@ import {
   LucideSparkles,
   LucideAward,
   LucideClock,
-  LucideReceipt
+  LucideReceipt,
+  LucideUser,
+  LucideGraduationCap,
+  LucideCalendar
 } from 'lucide-react';
 import { authApi } from '../../../services/api/authApi';
+import { studentApi } from '../../../services/api/studentApi';
 
 export default function StudentHome() {
   const navigate = useNavigate();
   const currentUser = authApi.getCurrentUser() || { name: 'Ali Khan', student_id: '1234' };
+  const [studentData, setStudentData] = useState({
+    name: currentUser.name || 'Ali Khan',
+    course: currentUser.course || 'IELTS Academic',
+    created_at: currentUser.created_at || '2025-04-12',
+    student_id: currentUser.student_id || '1234'
+  });
+
+  useEffect(() => {
+    const studentIdentifier = currentUser.id || currentUser.student_id;
+    if (studentIdentifier) {
+      studentApi.getStudentById(studentIdentifier)
+        .then(profile => {
+          if (profile) {
+            setStudentData(prev => ({
+              ...prev,
+              name: profile.name || prev.name,
+              course: profile.course || prev.course,
+              created_at: profile.created_at || prev.created_at,
+              student_id: profile.student_id || prev.student_id
+            }));
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  const formatJourneyDate = (dateVal) => {
+    if (!dateVal) return 'April 2025';
+    try {
+      const d = new Date(dateVal);
+      if (isNaN(d.getTime())) return dateVal;
+      return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch {
+      return dateVal;
+    }
+  };
 
   return (
     <div className="w-full max-w-7xl mx-auto space-y-5 sm:space-y-6">
@@ -31,7 +71,7 @@ export default function StudentHome() {
 
           <div className="flex items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-              Welcome, {currentUser.name} 👋
+              Welcome, {studentData.name} 👋
             </h1>
           </div>
 
@@ -40,18 +80,54 @@ export default function StudentHome() {
           </p>
         </div>
 
-        {/* Visual Badge - Official Student Status */}
-        <div className="relative z-10 w-full md:w-auto flex-shrink-0 flex items-center justify-center">
-          <div className="w-36 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 p-3.5 flex flex-col items-center justify-center text-center shadow-lg">
-            <div className="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center mb-2">
-              <LucideAward className="w-5 h-5" />
+        {/* Visual Badge - Official Student Academic Profile */}
+        <div className="relative z-10 w-full sm:w-auto flex-shrink-0 flex items-center justify-center">
+          <div className="w-full sm:w-72 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 p-4 sm:p-4.5 shadow-xl flex flex-col gap-3">
+            {/* User Name & Active Status */}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-blue-500/25 text-blue-200 border border-blue-400/30 flex items-center justify-center flex-shrink-0">
+                  <LucideUser className="w-4 h-4 text-blue-200" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <div className="text-[10px] uppercase tracking-wider text-blue-200/90 font-semibold leading-tight">
+                    Candidate
+                  </div>
+                  <div className="text-sm font-bold text-white truncate">
+                    {studentData.name}
+                  </div>
+                </div>
+              </div>
+              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-400/30 flex items-center gap-1.5 flex-shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Active
+              </span>
             </div>
-            <span className="text-[10px] uppercase tracking-wider text-blue-200 font-semibold">Student ID</span>
-            <span className="text-sm font-mono font-bold text-white">#{currentUser.student_id || '1234'}</span>
-            <span className="text-[10px] text-emerald-300 mt-1 font-semibold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Active
-            </span>
+
+            <div className="h-px bg-white/10 w-full" />
+
+            {/* Course & Journey Start Information */}
+            <div className="grid grid-cols-2 gap-3 text-left">
+              <div className="space-y-0.5">
+                <span className="text-[10px] uppercase tracking-wider text-blue-200/80 font-medium flex items-center gap-1">
+                  <LucideGraduationCap className="w-3 h-3 text-blue-300" />
+                  Course
+                </span>
+                <p className="text-xs font-bold text-white truncate" title={studentData.course}>
+                  {studentData.course || 'IELTS Academic'}
+                </p>
+              </div>
+
+              <div className="space-y-0.5">
+                <span className="text-[10px] uppercase tracking-wider text-blue-200/80 font-medium flex items-center gap-1">
+                  <LucideCalendar className="w-3 h-3 text-blue-300" />
+                  Journey Start
+                </span>
+                <p className="text-xs font-bold text-white truncate">
+                  {formatJourneyDate(studentData.created_at)}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
