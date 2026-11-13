@@ -26,7 +26,7 @@ export default function EditStudent() {
   const [course, setCourse] = useState('IELTS Academic');
   const [customCourse, setCustomCourse] = useState('');
   const [totalFee, setTotalFee] = useState('60000');
-  const [uniqueId, setUniqueId] = useState('');
+  const [student_id, setStudentId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [error, setError] = useState('');
@@ -38,7 +38,7 @@ export default function EditStudent() {
         setLoadingInitial(true);
         const student = await studentApi.getStudentById(studentId);
         setName(student.name || '');
-        setUniqueId(student.student_id || '');
+        setStudentId(student.student_id || '');
         if (student.course) {
           if (PRESET_COURSES.includes(student.course)) {
             setCourse(student.course);
@@ -106,17 +106,18 @@ export default function EditStudent() {
   }
 
   return (
-    <div className="space-y-4 max-w-xl mx-auto">
+    <div className="w-full max-w-2xl mx-auto space-y-5 sm:space-y-6">
       {/* Breadcrumb & Header */}
       <div>
-        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
           <Link to="/admin/dashboard" className="hover:text-slate-600 transition-colors">Dashboard</Link>
-          <LucideChevronRight className="w-3 h-3" />
+          <LucideChevronRight className="w-3.5 h-3.5" />
           <Link to="/admin/students" className="hover:text-slate-600 transition-colors">All Students</Link>
-          <LucideChevronRight className="w-3 h-3" />
-          <span className="text-blue-600">Edit</span>
+          <LucideChevronRight className="w-3.5 h-3.5" />
+          <span className="text-blue-600 font-bold">Edit</span>
         </div>
-        <h1 className="text-xl font-bold text-slate-900 tracking-tight">Edit Student</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Edit Student</h1>
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">Modify registered student details and course enrollment</p>
       </div>
 
       {error && <Alert type="error" message={error} onClose={() => setError('')} />}
@@ -128,20 +129,20 @@ export default function EditStudent() {
             <LucideUserCheck className="w-5 h-5 text-brand-900" />
           </div>
           <h2 className="text-base font-bold text-slate-900">Update Student Information</h2>
-          <p className="text-[11px] text-slate-500 mt-0.5">Unique Student ID is fixed and permanent</p>
+          <p className="text-[11px] text-slate-500 mt-0.5">Student ID is fixed and permanent</p>
         </div>
 
         <form onSubmit={handleSubmit} className="max-w-sm mx-auto space-y-3.5">
-          {/* Unique ID (Read-only) */}
+          {/* Student ID (Read-only) */}
           <div>
             <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
-              Unique Student ID
+              Student ID
             </label>
             <div className="relative">
               <input
                 type="text"
                 disabled
-                value={uniqueId}
+                value={student_id}
                 className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-slate-100 text-slate-500 font-mono text-xs cursor-not-allowed"
               />
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400">
@@ -231,25 +232,25 @@ export default function EditStudent() {
             </div>
           </div>
 
-          <div className="pt-2 flex flex-col sm:flex-row items-center gap-2">
+          <div className="pt-3 flex flex-col sm:flex-row items-center gap-2.5">
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full sm:flex-1 py-2 px-4 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white font-semibold text-xs sm:text-sm shadow-xs transition-colors flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer"
+              className="w-full sm:flex-1 py-2.5 px-4 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white font-semibold text-sm shadow-xs transition-colors flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer min-h-[44px]"
             >
               {isLoading ? (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
                   <span>Update Student</span>
-                  <LucideArrowRight className="w-3.5 h-3.5" />
+                  <LucideArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
             <button
               type="button"
               onClick={() => navigate('/admin/students')}
-              className="w-full sm:w-auto px-4 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors min-h-[44px] cursor-pointer"
             >
               Back
             </button>

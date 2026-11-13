@@ -1,20 +1,116 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Fluid typography scales using clamp() */
+    --font-page-title: clamp(1.5rem, 2.2vw + 0.8rem, 2rem);      /* 24px - 32px */
+    --font-section-title: clamp(1.25rem, 1.8vw + 0.6rem, 1.5rem); /* 20px - 24px */
+    --font-card-title: clamp(1rem, 1.2vw + 0.6rem, 1.125rem);     /* 16px - 18px */
+    --font-stat-number: clamp(1.75rem, 2.5vw + 1rem, 2.25rem);    /* 28px - 36px */
+    --font-body: clamp(0.875rem, 0.4vw + 0.8rem, 1rem);           /* 14px - 16px */
+    --font-label: clamp(0.75rem, 0.3vw + 0.7rem, 0.875rem);       /* 12px - 14px */
+  }
+
   html {
     -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-slate-50 text-slate-800 font-sans antialiased min-h-screen selection:bg-brand-500 selection:text-white;
+    @apply bg-[#f8fafc] text-slate-800 font-sans antialiased min-h-screen selection:bg-blue-600 selection:text-white;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Accessible focus indicators */
+  :focus-visible {
+    @apply outline-none ring-2 ring-blue-600 ring-offset-2 ring-offset-white;
   }
 }
 
-/* Custom scrollbar for clean UI */
+@layer components {
+  /* Centralized Typography Scale */
+  .page-title {
+    font-size: var(--font-page-title);
+    @apply font-bold text-slate-900 tracking-tight leading-tight;
+  }
+
+  .section-title {
+    font-size: var(--font-section-title);
+    @apply font-bold text-slate-900 tracking-tight leading-snug;
+  }
+
+  .card-title {
+    font-size: var(--font-card-title);
+    @apply font-bold text-slate-900 tracking-tight;
+  }
+
+  .stat-number {
+    font-size: var(--font-stat-number);
+    @apply font-extrabold text-slate-900 tracking-tight leading-none;
+  }
+
+  /* Centralized Button Design System */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 rounded-lg 
+           bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-sm font-semibold 
+           shadow-xs hover:shadow transition-all duration-150 cursor-pointer 
+           disabled:opacity-50 disabled:pointer-events-none min-h-[44px] sm:min-h-[40px];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-3.5 py-2.5 sm:py-2 rounded-lg 
+           border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 
+           active:bg-slate-100 text-sm font-semibold shadow-xs transition-all duration-150 
+           cursor-pointer disabled:opacity-50 min-h-[44px] sm:min-h-[40px];
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg 
+           border border-blue-200 bg-blue-50/80 hover:bg-blue-100 text-blue-700 
+           active:bg-blue-200/80 text-xs sm:text-sm font-semibold transition-all duration-150 
+           cursor-pointer shadow-2xs;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 rounded-lg 
+           bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white text-sm font-semibold 
+           shadow-xs transition-all duration-150 cursor-pointer disabled:opacity-50 min-h-[44px] sm:min-h-[40px];
+  }
+
+  /* Centralized Form Inputs */
+  .input-standard {
+    @apply w-full px-3.5 py-2.5 sm:py-2 rounded-lg border border-slate-200 bg-white text-slate-900 
+           text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/30 
+           focus:border-blue-600 transition-all shadow-2xs min-h-[44px] sm:min-h-[40px];
+  }
+
+  /* Centralized Card & Container Architecture */
+  .page-container {
+    @apply w-full max-w-7xl mx-auto space-y-5 sm:space-y-6;
+  }
+
+  .form-container {
+    @apply w-full max-w-2xl mx-auto space-y-5 sm:space-y-6;
+  }
+
+  .card-standard {
+    @apply bg-white rounded-xl border border-slate-200/90 shadow-sm overflow-hidden;
+  }
+
+  .stat-card-standard {
+    @apply bg-white rounded-xl p-4 sm:p-5 border border-slate-200/90 shadow-sm flex items-center justify-between;
+  }
+
+  .table-responsive-wrapper {
+    @apply overflow-x-auto w-full rounded-xl border border-slate-200/90 shadow-sm bg-white;
+  }
+}
+
+/* Custom scrollbar for clean SaaS UI */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

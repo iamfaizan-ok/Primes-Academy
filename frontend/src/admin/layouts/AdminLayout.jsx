@@ -171,7 +171,7 @@ export default function AdminLayout() {
         </header>
 
         {/* Page Content Viewport */}
-        <main className="flex-1 p-4 md:p-6 bg-[#f8fafc]">
+        <main className="flex-1 p-3.5 sm:p-5 md:p-6 lg:p-8 bg-[#f8fafc]">
           <Outlet />
         </main>
       </div>

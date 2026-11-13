@@ -85,23 +85,23 @@ export default function StudentList() {
   const paginatedStudents = students.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <div className="space-y-4 max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto space-y-5 sm:space-y-6">
       {/* Breadcrumb & Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
             <Link to="/admin/dashboard" className="hover:text-slate-600 transition-colors">Dashboard</Link>
-            <LucideChevronRight className="w-3 h-3" />
-            <span className="text-blue-600">All Students</span>
+            <LucideChevronRight className="w-3.5 h-3.5" />
+            <span className="text-blue-600 font-bold">All Students</span>
           </div>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight">All Students</h1>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">All Students</h1>
         </div>
 
         <button
           onClick={() => navigate('/admin/students/add')}
-          className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-sm font-semibold shadow-xs transition-colors cursor-pointer"
         >
-          <LucidePlus className="w-3.5 h-3.5" />
+          <LucidePlus className="w-4 h-4" />
           <span>Add New Student</span>
         </button>
       </div>
@@ -117,51 +117,51 @@ export default function StudentList() {
       {/* Main Table Card */}
       <div className="bg-white rounded-xl border border-slate-200/90 shadow-sm overflow-hidden">
         {/* Search Bar Header */}
-        <div className="p-3 sm:p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="relative w-full sm:w-72">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-              <LucideSearch className="w-3.5 h-3.5" />
+        <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="relative w-full sm:w-80">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <LucideSearch className="w-4 h-4" />
             </div>
             <input
               type="text"
               value={search}
               onChange={handleSearchChange}
               placeholder="Search by Name or ID..."
-              className="w-full pl-9 pr-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50/60 text-xs sm:text-sm focus:outline-none focus:ring-1.5 focus:ring-blue-600 focus:bg-white focus:border-transparent transition-all"
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 bg-slate-50/60 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 focus:bg-white transition-all"
             />
           </div>
 
-          <div className="text-xs font-medium text-slate-500">
+          <div className="text-xs sm:text-sm font-medium text-slate-500">
             Showing <span className="font-bold text-slate-800">{students.length}</span> registered students
           </div>
         </div>
 
-        {/* Table View */}
+        {/* Table View - Executive SaaS Design */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs sm:text-sm text-slate-700">
-            <thead className="bg-[#f8fafc] text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
+          <table className="w-full text-left text-sm text-slate-700">
+            <thead className="bg-[#f8fafc] text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
               <tr>
-                <th className="py-2.5 px-4 w-12">#</th>
-                <th className="py-2.5 px-4">Name</th>
-                <th className="py-2.5 px-4">Student ID</th>
-                <th className="py-2.5 px-4 text-center">Quick Links</th>
-                <th className="py-2.5 px-4 text-right">Action</th>
+                <th className="py-3.5 px-4 w-12">#</th>
+                <th className="py-3.5 px-4">Name</th>
+                <th className="py-3.5 px-4">Student ID</th>
+                <th className="py-3.5 px-4 text-center">Quick Links</th>
+                <th className="py-3.5 px-4 text-right">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {loading ? (
                 <tr>
-                  <td colSpan="5" className="py-10 text-center text-slate-400">
-                    <div className="inline-block w-5 h-5 border-2 border-slate-300 border-t-blue-600 rounded-full animate-spin mb-1.5" />
-                    <p className="text-xs">Loading students...</p>
+                  <td colSpan="5" className="py-12 text-center text-slate-400">
+                    <div className="inline-block w-6 h-6 border-2 border-slate-300 border-t-blue-600 rounded-full animate-spin mb-2" />
+                    <p className="text-sm font-medium">Loading students...</p>
                   </td>
                 </tr>
               ) : paginatedStudents.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="py-10 text-center text-slate-500">
-                    <LucideUser className="w-7 h-7 text-slate-300 mx-auto mb-1.5" />
-                    <p className="font-semibold text-slate-800 text-xs">No Students Found</p>
-                    <p className="text-[11px] text-slate-400 mt-0.5">
+                  <td colSpan="5" className="py-12 text-center text-slate-500">
+                    <LucideUser className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                    <p className="font-semibold text-slate-800 text-sm">No Students Found</p>
+                    <p className="text-xs text-slate-400 mt-0.5">
                       {search ? `No student matched "${search}".` : 'Add your first student to get started.'}
                     </p>
                   </td>
@@ -172,69 +172,69 @@ export default function StudentList() {
                     key={student.id} 
                     className="hover:bg-slate-50/70 transition-colors group"
                   >
-                    <td className="py-2.5 px-4 text-xs font-semibold text-slate-400">
+                    <td className="py-3.5 px-4 text-sm font-semibold text-slate-400">
                       {(currentPage - 1) * itemsPerPage + idx + 1}
                     </td>
-                    <td className="py-2.5 px-4">
-                      <div className="font-bold text-slate-900 text-xs sm:text-sm">
+                    <td className="py-3.5 px-4">
+                      <div className="font-bold text-slate-900 text-sm">
                         {student.name}
                       </div>
-                      <div className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
-                        <span className="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-medium border border-blue-100 text-[10px]">
+                      <div className="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
+                        <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-medium border border-blue-100 text-xs">
                           {student.course || 'IELTS Academic'}
                         </span>
                       </div>
                     </td>
-                    <td className="py-2.5 px-4">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-slate-100 text-slate-800 border border-slate-200">
-                        {student.student_id}
+                    <td className="py-3.5 px-4">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-slate-100 text-slate-800 border border-slate-200">
+                        #{student.student_id}
                       </span>
                     </td>
-                    <td className="py-2.5 px-4 text-center">
-                      <div className="inline-flex items-center gap-1">
+                    <td className="py-3.5 px-4 text-center">
+                      <div className="inline-flex items-center gap-1.5">
                         <Link
                           to={`/admin/performance/${student.id}`}
                           title="View Performance"
-                          className="px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors flex items-center gap-1"
+                          className="px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors flex items-center gap-1.5"
                         >
-                          <LucideActivity className="w-3 h-3" />
+                          <LucideActivity className="w-3.5 h-3.5" />
                           <span>Tests</span>
                         </Link>
                         <Link
                           to={`/admin/attendance/${student.id}`}
                           title="View Attendance History"
-                          className="px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors flex items-center gap-1"
+                          className="px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors flex items-center gap-1.5"
                         >
-                          <LucideCalendar className="w-3 h-3" />
+                          <LucideCalendar className="w-3.5 h-3.5" />
                           <span>Attendance</span>
                         </Link>
                         <Link
                           to={`/admin/finance/${student.id}`}
                           title="View Finance & Payments"
-                          className="px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors flex items-center gap-1"
+                          className="px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors flex items-center gap-1.5"
                         >
-                          <LucideCreditCard className="w-3 h-3" />
+                          <LucideCreditCard className="w-3.5 h-3.5" />
                           <span>Finance</span>
                         </Link>
                       </div>
                     </td>
-                    <td className="py-2.5 px-4 text-right">
-                      <div className="inline-flex items-center gap-1">
+                    <td className="py-3.5 px-4 text-right">
+                      <div className="inline-flex items-center gap-1.5">
                         {/* Edit Button (Blue) */}
                         <button
                           onClick={() => navigate(`/admin/students/edit/${student.id}`)}
-                          className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-all cursor-pointer"
+                          className="p-2 rounded-lg text-blue-600 hover:bg-blue-50 transition-all cursor-pointer"
                           title="Edit Student"
                         >
-                          <LucideEdit className="w-3.5 h-3.5" />
+                          <LucideEdit className="w-4 h-4" />
                         </button>
                         {/* Delete Button (Red) */}
                         <button
                           onClick={() => setDeleteModal({ isOpen: true, student })}
-                          className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition-all cursor-pointer"
+                          className="p-2 rounded-lg text-rose-600 hover:bg-rose-50 transition-all cursor-pointer"
                           title="Delete Student"
                         >
-                          <LucideTrash2 className="w-3.5 h-3.5" />
+                          <LucideTrash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </td>

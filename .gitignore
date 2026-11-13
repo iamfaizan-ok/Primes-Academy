@@ -17,6 +17,11 @@ instance/
 # SQLite database (if any)
 db.sqlite3
 
+# Static collection & uploads
+staticfiles/
+backend/staticfiles/
+media/
+
 # OS / IDE artefacts
 .DS_Store
 Thumbs.db

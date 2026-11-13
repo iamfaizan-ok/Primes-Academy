@@ -192,7 +192,7 @@ export default function StudentLayout() {
           </div>
         </header>
 
-        <main className="flex-1 p-5 md:p-6 bg-[#f8fafc]">
+        <main className="flex-1 p-3.5 sm:p-5 md:p-6 lg:p-8 bg-[#f8fafc]">
           <Outlet />
         </main>
       </div>

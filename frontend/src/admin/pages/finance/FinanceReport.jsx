@@ -123,23 +123,23 @@ export default function FinanceReport() {
   }) : [];
 
   return (
-    <div className="space-y-4 max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto space-y-5 sm:space-y-6">
       {/* Breadcrumb & Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
             <Link to="/admin/dashboard" className="hover:text-slate-600 transition-colors">Dashboard</Link>
-            <LucideChevronRight className="w-3 h-3" />
+            <LucideChevronRight className="w-3.5 h-3.5" />
             <Link to="/admin/finance" onClick={handleBackToOverview} className="hover:text-slate-600 transition-colors">Finance</Link>
             {selectedStudentId && studentFinance?.student && (
               <>
-                <LucideChevronRight className="w-3 h-3" />
+                <LucideChevronRight className="w-3.5 h-3.5" />
                 <span className="text-blue-600 font-bold">{studentFinance.student.name}</span>
               </>
             )}
           </div>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight">Finance Report</h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Finance Report</h1>
+          <p className="text-sm text-slate-500 mt-0.5">
             {selectedStudentId 
               ? `Individual fee ledger & payment history for ${studentFinance?.student?.name || 'student'}`
               : 'Academy-wide fee tracking, total collections, and student payment statuses'}
@@ -149,15 +149,15 @@ export default function FinanceReport() {
         {selectedStudentId ? (
           <button
             onClick={handleBackToOverview}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium shadow-2xs transition-all cursor-pointer self-start sm:self-auto"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold shadow-xs transition-all cursor-pointer self-start sm:self-auto"
           >
-            <LucideArrowLeft className="w-3.5 h-3.5" />
+            <LucideArrowLeft className="w-4 h-4" />
             <span>All Students Finance</span>
           </button>
         ) : (
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               Live PostgreSQL Records
             </span>
           </div>
@@ -167,53 +167,53 @@ export default function FinanceReport() {
       {alert && <Alert type={alert.type} message={alert.message} onClose={() => setAlert(null)} />}
 
       {/* TOP 3 METRICS SUMMARY CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Total Collected */}
-        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Collected</p>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Collected</p>
+            <h2 className="text-3xl font-extrabold text-slate-900 mt-1">
               Rs. {Number(overview?.summary?.totalCollected || 0).toLocaleString()}
             </h2>
-            <p className="text-[11px] text-emerald-600 font-semibold mt-0.5 flex items-center gap-1">
-              <LucideTrendingUp className="w-3 h-3" />
+            <p className="text-xs text-emerald-600 font-semibold mt-1 flex items-center gap-1">
+              <LucideTrendingUp className="w-3.5 h-3.5" />
               Tuition payments received
             </p>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs">
-            <LucideCheckCircle2 className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-xs">
+            <LucideCheckCircle2 className="w-6 h-6" />
           </div>
         </div>
 
         {/* Total Pending / Remaining */}
-        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Pending Receivables</p>
-            <h2 className="text-xl sm:text-2xl font-bold text-amber-700 mt-0.5">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Receivables</p>
+            <h2 className="text-3xl font-extrabold text-amber-700 mt-1">
               Rs. {Number(overview?.summary?.totalRemaining || 0).toLocaleString()}
             </h2>
-            <p className="text-[11px] text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-400 mt-1">
               Out of Rs. {Number(overview?.summary?.totalReceivable || 0).toLocaleString()} expected
             </p>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-xs">
-            <LucideWallet className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shadow-xs">
+            <LucideWallet className="w-6 h-6" />
           </div>
         </div>
 
         {/* Total Students in Finance */}
-        <div className="bg-white rounded-xl p-4 sm:p-4.5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <div className="bg-white rounded-xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Registered Students</p>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Registered Students</p>
+            <h2 className="text-3xl font-extrabold text-slate-900 mt-1">
               {overview?.summary?.totalStudents || 0}
             </h2>
-            <p className="text-[11px] text-blue-600 font-semibold mt-0.5">
+            <p className="text-xs text-blue-600 font-semibold mt-1">
               Standard Fee: Rs. 60,000 / student
             </p>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs">
-            <LucideUsers className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center shadow-xs">
+            <LucideUsers className="w-6 h-6" />
           </div>
         </div>
       </div>
@@ -227,66 +227,66 @@ export default function FinanceReport() {
               <p className="text-xs">Loading student payment statement...</p>
             </div>
           ) : studentFinance?.student ? (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-start">
               {/* Left Student Finance Summary Card */}
-              <div className="lg:col-span-5 bg-white rounded-xl border border-slate-200/90 shadow-sm p-4 sm:p-5 space-y-4">
+              <div className="lg:col-span-5 bg-white rounded-lg border border-slate-200/90 shadow-2xs p-3.5 space-y-3">
                 <div>
-                  <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Student Account</span>
-                  <h2 className="text-lg sm:text-xl font-bold text-slate-900 mt-0.5">{studentFinance.student.name}</h2>
+                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Student Account</span>
+                  <h2 className="text-base font-bold text-slate-900 mt-0.5">{studentFinance.student.name}</h2>
                   <p className="text-xs font-mono font-semibold text-blue-600 mt-0.5">
                     (ID: {studentFinance.student.student_id})
                   </p>
                 </div>
 
                 {/* Total Agreed Fee Badge */}
-                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between shadow-2xs">
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between shadow-2xs">
                   <div>
-                    <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Agreed Total Fee</p>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mt-0.5">
+                    <p className="text-[9px] font-bold text-slate-600 uppercase tracking-wider">Agreed Total Fee</p>
+                    <h3 className="text-base font-bold text-slate-900 mt-0.5">
                       Rs. {Number(studentFinance.totalFee || 60000).toLocaleString()}
                     </h3>
                   </div>
-                  <div className="w-8 h-8 rounded-lg bg-slate-200/60 text-slate-700 flex items-center justify-center">
-                    <LucideCreditCard className="w-4 h-4" />
+                  <div className="w-7 h-7 rounded-md bg-slate-200/60 text-slate-700 flex items-center justify-center">
+                    <LucideCreditCard className="w-3.5 h-3.5" />
                   </div>
                 </div>
 
                 {/* Total Paid Badge */}
-                <div className="p-3.5 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-between shadow-2xs">
+                <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-between shadow-2xs">
                   <div>
-                    <p className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">Total Paid</p>
-                    <h3 className="text-xl sm:text-2xl font-bold text-emerald-900 mt-0.5">
+                    <p className="text-[9px] font-bold text-emerald-800 uppercase tracking-wider">Total Paid</p>
+                    <h3 className="text-lg font-bold text-emerald-900 mt-0.5">
                       Rs. {Number(studentFinance.totalPaid).toLocaleString()}
                     </h3>
                   </div>
-                  <div className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                    <LucideCheckCircle2 className="w-5 h-5" />
+                  <div className="w-7 h-7 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                    <LucideCheckCircle2 className="w-4 h-4" />
                   </div>
                 </div>
 
                 {/* Remaining Balance Badge */}
-                <div className="p-3.5 rounded-lg bg-amber-50/70 border border-amber-200/70 flex items-center justify-between shadow-2xs">
+                <div className="p-2.5 rounded-lg bg-amber-50/70 border border-amber-200/70 flex items-center justify-between shadow-2xs">
                   <div>
-                    <p className="text-[11px] font-bold text-amber-900 uppercase tracking-wider">Remaining</p>
-                    <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mt-0.5">
+                    <p className="text-[9px] font-bold text-amber-900 uppercase tracking-wider">Remaining</p>
+                    <h3 className="text-lg font-bold text-amber-900 mt-0.5">
                       Rs. {Number(studentFinance.remaining).toLocaleString()}
                     </h3>
                   </div>
-                  <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center">
-                    <LucideWallet className="w-5 h-5" />
+                  <div className="w-7 h-7 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center">
+                    <LucideWallet className="w-4 h-4" />
                   </div>
                 </div>
 
                 {/* Student Switcher Dropdown */}
                 {overview?.students && overview.students.length > 1 && (
                   <div className="pt-2 border-t border-slate-100">
-                    <label className="block text-[11px] font-semibold text-slate-500 mb-1">
+                    <label className="block text-[10px] font-semibold text-slate-500 mb-1">
                       Switch to another student:
                     </label>
                     <select
                       value={selectedStudentId}
                       onChange={(e) => handleSelectStudent(e.target.value)}
-                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50/50 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-1.5 focus:ring-blue-600 focus:bg-white"
+                      className="w-full px-2 py-1 rounded-md border border-slate-200 bg-slate-50/50 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-1.5 focus:ring-blue-600 focus:bg-white"
                     >
                       {overview.students.map(s => (
                         <option key={s.id} value={s.id}>
@@ -299,45 +299,45 @@ export default function FinanceReport() {
               </div>
 
               {/* Right Payment History Table */}
-              <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col">
-                <div className="p-3.5 sm:p-4 border-b border-slate-100 flex items-center justify-between gap-3">
+              <div className="lg:col-span-7 bg-white rounded-lg border border-slate-200/90 shadow-2xs overflow-hidden flex flex-col">
+                <div className="p-3 border-b border-slate-100 flex items-center justify-between gap-3">
                   <div>
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900">Payment History</h3>
-                    <p className="text-xs text-slate-500 mt-0.5">Recorded fee installment transactions</p>
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900">Payment History</h3>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Recorded fee installment transactions</p>
                   </div>
 
                   <button
                     onClick={() => navigate(`/admin/finance/${studentFinance.student.id}/add`)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] active:bg-[#09101c] text-white text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer"
                   >
-                    <LucidePlus className="w-3.5 h-3.5" />
+                    <LucidePlus className="w-4 h-4" />
                     <span>Add Amount</span>
                   </button>
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs sm:text-sm text-slate-700">
-                    <thead className="bg-[#f8fafc] text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
+                  <table className="w-full text-left text-sm text-slate-700">
+                    <thead className="bg-[#f8fafc] text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
                       <tr>
-                        <th className="py-2.5 px-4">Date</th>
-                        <th className="py-2.5 px-4">Amount</th>
-                        <th className="py-2.5 px-4 text-right">Action</th>
+                        <th className="py-3.5 px-4">Date</th>
+                        <th className="py-3.5 px-4">Amount</th>
+                        <th className="py-3.5 px-4 text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
                       {studentFinance.payments.length === 0 ? (
                         <tr>
-                          <td colSpan={3} className="py-10 text-center text-slate-400">
-                            <LucideCreditCard className="w-6 h-6 text-slate-300 mx-auto mb-1.5" />
-                            <p className="font-semibold text-slate-700 text-xs">No Payments Recorded Yet</p>
-                            <p className="text-[11px] text-slate-400 mt-0.5 max-w-sm mx-auto">
+                          <td colSpan={3} className="py-12 text-center text-slate-400">
+                            <LucideCreditCard className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                            <p className="font-semibold text-slate-700 text-sm">No Payments Recorded Yet</p>
+                            <p className="text-xs text-slate-400 mt-0.5 max-w-sm mx-auto">
                               This student has not submitted any installments. Click "Add Amount" above to log a payment.
                             </p>
                             <button
                               onClick={() => navigate(`/admin/finance/${studentFinance.student.id}/add`)}
-                              className="mt-3 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 text-xs font-semibold transition-colors inline-flex items-center gap-1 cursor-pointer"
+                              className="mt-3 px-4 py-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 text-xs sm:text-sm font-semibold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                             >
-                              <LucidePlus className="w-3 h-3" />
+                              <LucidePlus className="w-4 h-4" />
                               <span>Add First Installment</span>
                             </button>
                           </td>
@@ -345,34 +345,34 @@ export default function FinanceReport() {
                       ) : (
                         studentFinance.payments.map((p) => (
                           <tr key={p.id} className="hover:bg-slate-50/70 transition-colors">
-                            <td className="py-2.5 px-4 font-medium text-slate-800">
-                              <div className="flex items-center gap-1.5">
-                                <LucideCalendar className="w-3.5 h-3.5 text-slate-400" />
+                            <td className="py-3.5 px-4 font-semibold text-slate-800 text-sm">
+                              <div className="flex items-center gap-2">
+                                <LucideCalendar className="w-4 h-4 text-slate-400" />
                                 <span>{p.payment_date}</span>
                               </div>
-                              <span className="block text-[10px] text-slate-400 font-normal pl-5">
+                              <span className="block text-xs text-slate-400 font-normal pl-6">
                                 {p.day_name}
                               </span>
                             </td>
-                            <td className="py-2.5 px-4 font-bold text-slate-900 text-xs sm:text-sm">
+                            <td className="py-3.5 px-4 font-bold text-slate-900 text-sm sm:text-base font-mono">
                               Rs. {Number(p.amount).toLocaleString()}
                             </td>
-                            <td className="py-2.5 px-4 text-right">
-                              <div className="inline-flex items-center gap-1 justify-end">
+                            <td className="py-3.5 px-4 text-right">
+                              <div className="inline-flex items-center gap-2 justify-end">
                                 <button
                                   onClick={() => navigate(`/admin/finance/${studentFinance.student.id}/edit/${p.id}`)}
-                                  className="px-2.5 py-1 rounded-md text-blue-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 transition-all cursor-pointer inline-flex items-center gap-1 text-xs font-medium"
+                                  className="px-3 py-1.5 rounded-lg text-blue-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 transition-all cursor-pointer inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold"
                                   title="Edit Payment"
                                 >
-                                  <LucideEdit className="w-3 h-3" />
+                                  <LucideEdit className="w-4 h-4" />
                                   <span>Edit</span>
                                 </button>
                                 <button
                                   onClick={() => setDeletePaymentModal({ isOpen: true, payment: p })}
-                                  className="p-1.5 rounded-md text-rose-600 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition-all cursor-pointer inline-flex items-center"
+                                  className="p-2 rounded-lg text-rose-600 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition-all cursor-pointer inline-flex items-center"
                                   title="Delete Payment"
                                 >
-                                  <LucideTrash2 className="w-3 h-3" />
+                                  <LucideTrash2 className="w-4 h-4" />
                                 </button>
                               </div>
                             </td>
@@ -461,32 +461,32 @@ export default function FinanceReport() {
 
           {/* Master Table of All Students */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm text-slate-700">
-              <thead className="bg-[#f8fafc] text-[11px] font-bold text-slate-500 uppercase tracking-wider border-y border-slate-100">
+            <table className="w-full text-left text-sm text-slate-700">
+              <thead className="bg-[#f8fafc] text-xs font-bold text-slate-500 uppercase tracking-wider border-y border-slate-100">
                 <tr>
-                  <th className="py-2.5 px-4 w-12">#</th>
-                  <th className="py-2.5 px-4">Student</th>
-                  <th className="py-2.5 px-4">Student ID</th>
-                  <th className="py-2.5 px-4">Total Paid</th>
-                  <th className="py-2.5 px-4">Remaining Balance</th>
-                  <th className="py-2.5 px-4">Status</th>
-                  <th className="py-2.5 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4 w-12">#</th>
+                  <th className="py-3 px-4">Student</th>
+                  <th className="py-3 px-4">Student ID</th>
+                  <th className="py-3 px-4">Total Paid</th>
+                  <th className="py-3 px-4">Remaining Balance</th>
+                  <th className="py-3 px-4">Status</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {loadingOverview ? (
                   <tr>
                     <td colSpan={7} className="py-12 text-center text-slate-400">
-                      <div className="inline-block w-6 h-6 border-2 border-slate-300 border-t-blue-600 rounded-full animate-spin mb-1.5" />
-                      <p className="text-xs">Loading student finance directory...</p>
+                      <div className="inline-block w-6 h-6 border-2 border-slate-300 border-t-blue-600 rounded-full animate-spin mb-2" />
+                      <p className="text-sm font-medium">Loading student finance directory...</p>
                     </td>
                   </tr>
                 ) : filteredStudents.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-10 text-center text-slate-400">
-                      <LucideUsers className="w-7 h-7 text-slate-300 mx-auto mb-1.5" />
-                      <p className="font-semibold text-slate-700 text-xs">No Students Found</p>
-                      <p className="text-[11px] text-slate-400 mt-0.5">
+                    <td colSpan={7} className="py-12 text-center text-slate-400">
+                      <LucideUsers className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                      <p className="font-semibold text-slate-700 text-sm">No Students Found</p>
+                      <p className="text-xs text-slate-400 mt-0.5">
                         {statusFilter !== 'ALL'
                           ? `No students found with status "${statusFilter}".`
                           : search
@@ -498,19 +498,19 @@ export default function FinanceReport() {
                 ) : (
                   filteredStudents.map((s, idx) => (
                     <tr key={s.id} className="hover:bg-slate-50/70 transition-colors group">
-                      <td className="py-2.5 px-4 text-xs text-slate-400 font-semibold">
+                      <td className="py-3 px-4 text-sm text-slate-400 font-semibold">
                         {idx + 1}
                       </td>
 
                       {/* Student Name */}
-                      <td className="py-2.5 px-4">
+                      <td className="py-3 px-4">
                         <button
                           onClick={() => handleSelectStudent(s.id)}
-                          className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors text-left flex items-center gap-1.5 cursor-pointer text-xs sm:text-sm"
+                          className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors text-left flex items-center gap-1.5 cursor-pointer text-sm"
                         >
                           <span>{s.name}</span>
                         </button>
-                        <span className="text-[10px] text-slate-400 block mt-0.5">
+                        <span className="text-xs text-slate-400 block mt-0.5">
                           {s.paymentsCount > 0 
                             ? `${s.paymentsCount} installment${s.paymentsCount > 1 ? 's' : ''} (Last: ${s.lastPaymentDate})` 
                             : 'No payments made'}
@@ -518,25 +518,25 @@ export default function FinanceReport() {
                       </td>
 
                       {/* Student ID */}
-                      <td className="py-2.5 px-4">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-slate-100 text-slate-800 border border-slate-200">
+                      <td className="py-3 px-4">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-mono font-bold bg-slate-100 text-slate-800 border border-slate-200">
                           {s.student_id}
                         </span>
                       </td>
 
                       {/* Total Paid */}
-                      <td className="py-2.5 px-4 font-bold text-emerald-600 text-xs sm:text-sm">
+                      <td className="py-3 px-4 font-bold text-emerald-600 text-sm font-mono">
                         Rs. {Number(s.totalPaid).toLocaleString()}
                       </td>
 
                       {/* Remaining Balance */}
-                      <td className="py-2.5 px-4 font-bold text-amber-700 text-xs sm:text-sm">
+                      <td className="py-3 px-4 font-bold text-amber-700 text-sm font-mono">
                         Rs. {Number(s.remaining).toLocaleString()}
                       </td>
 
                       {/* Status Badge */}
-                      <td className="py-2.5 px-4">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold ${
+                      <td className="py-3 px-4">
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
                           s.status === 'Paid in Full'
                             ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
                             : s.status === 'Partial'
@@ -548,23 +548,23 @@ export default function FinanceReport() {
                       </td>
 
                       {/* Actions */}
-                      <td className="py-2.5 px-4 text-right">
-                        <div className="inline-flex items-center gap-1.5">
+                      <td className="py-3 px-4 text-right">
+                        <div className="inline-flex items-center gap-2">
                           <button
                             onClick={() => handleSelectStudent(s.id)}
-                            className="px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-medium transition-colors inline-flex items-center gap-1 cursor-pointer"
+                            className="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-semibold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                             title="View statement and payment history"
                           >
-                            <LucideEye className="w-3 h-3" />
+                            <LucideEye className="w-3.5 h-3.5" />
                             <span>Statement</span>
                           </button>
 
                           <button
                             onClick={() => navigate(`/admin/finance/${s.id}/add`)}
-                            className="px-2.5 py-1 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium transition-colors inline-flex items-center gap-1 cursor-pointer"
+                            className="px-3 py-1.5 rounded-lg bg-[#0d1728] hover:bg-[#1a2942] text-white text-xs font-semibold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                             title="Add tuition installment"
                           >
-                            <LucidePlus className="w-3 h-3" />
+                            <LucidePlus className="w-3.5 h-3.5" />
                             <span>Add</span>
                           </button>
                         </div>

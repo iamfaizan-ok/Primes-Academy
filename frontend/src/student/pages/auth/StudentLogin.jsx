@@ -34,7 +34,7 @@ export default function StudentLogin() {
     setError('');
 
     if (!name.trim() || !studentId.trim()) {
-      setError('Please provide both your registered Student Name and 4-digit Unique ID.');
+      setError('Please provide both your registered Student Name and 4-digit Student ID.');
       return;
     }
 
@@ -50,11 +50,11 @@ export default function StudentLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 md:p-8">
-      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[580px] border border-slate-200/60">
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-3.5 sm:p-6 md:p-8">
+      <div className="w-full max-w-5xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[580px] border border-slate-200/60">
         
         {/* Left Branding Panel (Navy Deep) */}
-        <div className="md:col-span-5 bg-gradient-to-br from-[#0d1728] via-[#111e38] to-[#0a1322] text-white p-8 md:p-12 flex flex-col justify-between relative overflow-hidden">
+        <div className="md:col-span-5 bg-gradient-to-br from-[#0d1728] via-[#111e38] to-[#0a1322] text-white p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between relative overflow-hidden">
           {/* Subtle geometric pattern */}
           <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#94b3d5_1px,transparent_1px)] [background-size:16px_16px]" />
           
@@ -69,22 +69,22 @@ export default function StudentLogin() {
               </div>
             </div>
 
-            <div className="mt-12 space-y-4">
+            <div className="mt-8 sm:mt-12 space-y-3 sm:space-y-4">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/20">
                 <LucideSparkles className="w-3.5 h-3.5" />
                 Student Academic Portal
               </span>
-              <h2 className="text-3xl font-extrabold text-white leading-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
                 Your Trusted <br />
                 <span className="text-blue-400">IELTS Partner</span>
               </h2>
-              <p className="text-sm text-slate-300 leading-relaxed max-w-sm">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-sm">
                 Easily check your IELTS test scores, daily attendance, and fee details in one place.
               </p>
             </div>
           </div>
 
-          <div className="relative z-10 pt-6 border-t border-slate-800 space-y-2">
+          <div className="relative z-10 pt-6 mt-6 md:mt-0 border-t border-slate-800 space-y-2">
             <div className="flex items-center gap-2 text-xs text-slate-400">
               <LucideCheckCircle2 className="w-4 h-4 text-blue-400" />
               <span>Official Primes Academy System</span>
@@ -106,7 +106,7 @@ export default function StudentLogin() {
         </div>
 
         {/* Right Form Panel */}
-        <div className="md:col-span-7 p-8 md:p-12 flex flex-col justify-center bg-white">
+        <div className="md:col-span-7 p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center bg-white">
           <div className="max-w-md w-full mx-auto">
             {/* Header */}
             <div className="text-center mb-8">
@@ -144,10 +144,10 @@ export default function StudentLogin() {
                 </div>
               </div>
 
-              {/* Student Unique ID */}
+              {/* Student ID */}
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Student Unique ID (4 digits)
+                  Student ID (4 digits)
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">

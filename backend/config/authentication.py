@@ -46,4 +46,11 @@ class DualSessionAndTokenAuthentication(BaseAuthentication):
 
         return None
 
+    def authenticate_header(self, request):
+        """
+        Return Bearer challenge so DRF returns 401 Unauthorized (instead of 403)
+        when credentials are not provided or invalid.
+        """
+        return 'Bearer realm="api"'
+
 
