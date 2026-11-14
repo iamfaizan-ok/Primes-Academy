@@ -1,11 +1,16 @@
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
 
+# Load environment variables from backend/.env or root/.env
 load_dotenv(BASE_DIR / '.env')
+load_dotenv(BASE_DIR.parent / '.env')
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'primes-academy-production-cryptographic-secret-key-2026-x9v8u7t6s5r4q3p2o1')
 
@@ -65,36 +70,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME", "primesAcademy"),
-        "USER": os.environ.get("DB_USER", "postgres"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
-        "HOST": os.environ.get("DB_HOST", "localhost"),
-        "PORT": os.environ.get("DB_PORT", "5432"),
-    }
-}
-
+# PostgreSQL Database Configuration (Sole Database Engine - SQLite is strictly disabled)
 database_url = os.getenv('DATABASE_URL')
 conn_max_age = int(os.getenv('DB_CONN_MAX_AGE', '600'))
 
 if database_url:
-    DATABASES['default'] = dj_database_url.config(default=database_url, conn_max_age=conn_max_age)
-elif os.getenv('DB_HOST'):
-    DATABASES['default'] = {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME", "primesAcademy"),
-        "USER": os.environ.get("DB_USER", "postgres"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
-        "HOST": os.environ.get("DB_HOST"),
-        "PORT": os.environ.get("DB_PORT", "5432"),
-        "CONN_MAX_AGE": conn_max_age,
+    DATABASES = {
+        'default': dj_database_url.config(default=database_url, conn_max_age=conn_max_age)
     }
 else:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', 'primesAcademy'),
+            'USER': os.getenv('DB_USER', 'postgres'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
+            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+            'CONN_MAX_AGE': conn_max_age,
+        }
     }
 
 AUTH_USER_MODEL = 'accounts.User'

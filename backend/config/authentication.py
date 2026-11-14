@@ -1,12 +1,7 @@
 from rest_framework.authentication import BaseAuthentication, SessionAuthentication
-try:
-    from apps.accounts.models import User
-    from apps.students.models import Student
-    from apps.accounts.tokens import verify_auth_token
-except ImportError:
-    from backend.apps.accounts.models import User
-    from backend.apps.students.models import Student
-    from backend.apps.accounts.tokens import verify_auth_token
+from apps.accounts.models import User
+from apps.students.models import Student
+from apps.accounts.tokens import verify_auth_token
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     """

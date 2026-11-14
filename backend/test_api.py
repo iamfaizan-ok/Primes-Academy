@@ -1,21 +1,22 @@
 import os
-import django
+import sys
+from pathlib import Path
 from decimal import Decimal
+
+BASE_DIR = Path(__file__).resolve().parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
 from django.test import Client
-try:
-    from apps.students.models import Student
-    from apps.performance.models import IELTSTest, calculate_ielts_overall
-    from apps.attendance.models import Attendance
-    from apps.finance.models import Payment
-except ImportError:
-    from backend.apps.students.models import Student
-    from backend.apps.performance.models import IELTSTest, calculate_ielts_overall
-    from backend.apps.attendance.models import Attendance
-    from backend.apps.finance.models import Payment
+from apps.students.models import Student
+from apps.performance.models import IELTSTest, calculate_ielts_overall
+from apps.attendance.models import Attendance
+from apps.finance.models import Payment
 
 def test_all():
     client = Client()
